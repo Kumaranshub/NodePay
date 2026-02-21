@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Public Transportation — Tiruchirappalli</title>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html, body { height:100%; font-family:'Anton', sans-serif; background:#000; color:#fff; overflow-x:hidden; }
+
+    /* ═══ NAV ═══ */
+    nav {
+      position:fixed; top:0; left:0; right:0; z-index:1000;
+      display:flex; justify-content:flex-end; align-items:center;
+      gap:40px; padding:20px 48px;
+      background:#000; border-bottom:1px solid #fff;
+    }
+    nav a { font-family:'Anton',sans-serif; font-size:15px; letter-spacing:0.1em; text-transform:uppercase; color:#fff; text-decoration:none; }
+    nav a:hover { text-decoration:underline; }
+    nav a.active { text-decoration:underline; }
+
+    /* ═══ PAGE WRAPPER ═══ */
+    .page { padding-top:57px; }
+
+    /* ═══ HERO BANNER ═══ */
+    .hero {
+      border-bottom:2px solid #fff;
+      padding:52px 56px 44px;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+    }
+    .hero h1 {
+      font-size:clamp(48px,7vw,96px);
+      line-height:0.9;
+      letter-spacing:0.01em;
+      text-transform:uppercase;
+    }
+    .hero-sub {
+      font-size:13px;
+      letter-spacing:0.22em;
+      text-transform:uppercase;
+      color:rgba(255,255,255,0.4);
+      text-align:right;
+      line-height:2;
+    }
+
+    /* ═══ TABS ═══ */
+    .tabs {
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      border-bottom:2px solid #fff;
+    }
+    .tab-btn {
+      padding:20px 10px;
+      font-family:'Anton',sans-serif;
+      font-size:14px;
+      letter-spacing:0.12em;
+      text-transform:uppercase;
+      color:rgba(255,255,255,0.45);
+      background:#000;
+      border:none;
+      border-right:1px solid #fff;
+      cursor:pointer;
+      transition:background 0.2s,color 0.2s;
+    }
+    .tab-btn:last-child { border-right:none; }
+    .tab-btn:hover { background:#fff; color:#000; }
+    .tab-btn.active { background:#fff; color:#000; }
+
+    /* ═══ PANELS ═══ */
+    .panel { display:none; padding:48px 56px; }
+    .panel.active { display:block; }
+
+    .panel-title {
+      font-size:clamp(28px,3vw,42px);
+      letter-spacing:0.04em;
+      text-transform:uppercase;
+      margin-bottom:36px;
+      padding-bottom:20px;
+      border-bottom:1px solid rgba(255,255,255,0.15);
+    }
+
+    /* ═══ SECTION LABEL ═══ */
+    .s-label {
+      font-size:11px;
+      letter-spacing:0.28em;
+      text-transform:uppercase;
+      color:rgba(255,255,255,0.4);
+      margin-bottom:16px;
+    }
+
+    /* ═══ FORM ELEMENTS ═══ */
+    .field-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:20px; }
+    .field-row-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-bottom:20px; }
+    .field-row-4 { display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:16px; margin-bottom:20px; }
+
+    select, input[type="date"], input[type="number"], input[type="text"] {
+      appearance:none;
+      background:#000;
+      border:2px solid #fff;
+      color:#fff;
+      font-family:'Anton',sans-serif;
+      font-size:14px;
+      letter-spacing:0.06em;
+      text-transform:uppercase;
+      padding:16px 18px;
+      width:100%;
+      outline:none;
+      cursor:pointer;
+    }
+    select option { background:#000; color:#fff; }
+    select:focus, input:focus { background:#fff; color:#000; }
+    input[type="date"]::-webkit-calendar-picker-indicator { filter:invert(1); }
+
+    /* ═══ BIG ACTION BUTTON ═══ */
+    .action-btn {
+      background:#fff; color:#000;
+      border:2px solid #fff;
+      padding:18px 40px;
+      font-family:'Anton',sans-serif;
+      font-size:18px;
+      letter-spacing:0.14em;
+      text-transform:uppercase;
+      cursor:pointer;
+      transition:background 0.2s,color 0.2s;
+      margin-top:8px;
+    }
+    .action-btn:hover { background:#000; color:#fff; }
+
+    /* ═══ RESULTS TABLE ═══ */
+    .results-wrap { margin-top:36px; border:2px solid #fff; }
+
+    .results-header {
+      display:grid;
+      background:#fff;
+      color:#000;
+      padding:14px 20px;
+      font-size:12px;
+      letter-spacing:0.2em;
+      text-transform:uppercase;
+    }
+
+    .result-row {
+      display:grid;
+      border-top:1px solid rgba(255,255,255,0.15);
+      padding:18px 20px;
+      align-items:center;
+      cursor:pointer;
+      transition:background 0.2s;
+    }
+    .result-row:hover { background:rgba(255,255,255,0.05); }
+
+    .result-row td, .results-header td { padding:0; }
+
+    /* Bus results grid */
+    .bus-grid { grid-template-columns:1fr 2fr 1fr 1fr 1fr 120px; }
+
+    /* Train results grid */
+    .train-grid { grid-template-columns:1fr 2fr 1fr 1fr 1fr 120px; }
+
+    .badge {
+      display:inline-block;
+      border:1px solid #fff;
+      padding:4px 10px;
+      font-size:11px;
+      letter-spacing:0.1em;
+      text-transform:uppercase;
+    }
+    .badge.green { border-color:#fff; color:#fff; }
+    .badge.red { border-color:rgba(255,255,255,0.3); color:rgba(255,255,255,0.3); }
+
+    .book-row-btn {
+      background:#fff; color:#000;
+      border:none;
+      padding:8px 16px;
+      font-family:'Anton',sans-serif;
+      font-size:12px;
+      letter-spacing:0.1em;
+      text-transform:uppercase;
+      cursor:pointer;
+      transition:background 0.2s,color 0.2s;
+    }
+    .book-row-btn:hover { background:#000; color:#fff; border:1px solid #fff; }
+
+    /* ═══ FARE CALCULATOR ═══ */
+    .fare-box {
+      border:2px solid #fff;
+      padding:32px 36px;
+      margin-top:28px;
+      display:flex;
+      gap:60px;
+      align-items:center;
+    }
+    .fare-item { display:flex; flex-direction:column; gap:6px; }
+    .fare-label { font-size:11px; letter-spacing:0.25em; text-transform:uppercase; color:rgba(255,255,255,0.4); }
+    .fare-value { font-size:36px; letter-spacing:0.04em; color:#fff; }
+    .fare-value.muted { color:rgba(255,255,255,0.25); }
+    .fare-divider { width:1px; height:52px; background:rgba(255,255,255,0.15); }
+
+    /* ═══ STATUS BOARD ═══ */
+    .status-board { border:2px solid #fff; }
+    .status-board-header {
+      background:#fff; color:#000;
+      display:grid;
+      grid-template-columns:120px 2fr 1fr 1fr 1fr 1fr;
+      padding:14px 20px;
+      font-size:11px;
+      letter-spacing:0.2em;
+      text-transform:uppercase;
+      gap:10px;
+    }
+    .status-row {
+      display:grid;
+      grid-template-columns:120px 2fr 1fr 1fr 1fr 1fr;
+      padding:18px 20px;
+      border-top:1px solid rgba(255,255,255,0.1);
+      font-size:14px;
+      letter-spacing:0.04em;
+      gap:10px;
+      align-items:center;
+    }
+    .status-on-time { color:#fff; font-size:12px; letter-spacing:0.1em; }
+    .status-delayed { color:rgba(255,255,255,0.4); font-size:12px; letter-spacing:0.1em; }
+    .status-cancelled { color:rgba(255,255,255,0.2); font-size:12px; letter-spacing:0.1em; text-decoration:line-through; }
+
+    /* ═══ BOOKING MODAL ═══ */
+    .modal-backdrop {
+      display:none;
+      position:fixed; inset:0;
+      background:rgba(0,0,0,0.88);
+      z-index:2000;
+      align-items:center;
+      justify-content:center;
+    }
+    .modal-backdrop.open { display:flex; }
+    .modal {
+      background:#000;
+      border:2px solid #fff;
+      padding:48px 52px;
+      width:560px;
+      max-width:95vw;
+      position:relative;
+    }
+    .modal h2 { font-size:28px; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:28px; }
+    .modal-close {
+      position:absolute; top:18px; right:22px;
+      background:none; border:none; color:#fff;
+      font-family:'Anton',sans-serif; font-size:13px;
+      letter-spacing:0.14em; text-transform:uppercase;
+      cursor:pointer; opacity:0.5;
+      transition:opacity 0.2s;
+    }
+    .modal-close:hover { opacity:1; }
+    .modal .field-row { margin-bottom:16px; }
+    .modal-confirm {
+      background:#fff; color:#000;
+      border:2px solid #fff;
+      padding:16px 32px;
+      font-family:'Anton',sans-serif;
+      font-size:16px; letter-spacing:0.14em;
+      text-transform:uppercase; cursor:pointer;
+      width:100%; margin-top:8px;
+      transition:background 0.2s, color 0.2s;
+    }
+    .modal-confirm:hover { background:#000; color:#fff; }
+
+    /* Confirmation box */
+    .confirm-box {
+      display:none;
+      border:2px solid #fff;
+      padding:32px 36px;
+      margin-top:28px;
+      text-align:center;
+    }
+    .confirm-box.show { display:block; }
+    .confirm-box .conf-title { font-size:22px; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:12px; }
+    .confirm-box .conf-ref { font-size:32px; letter-spacing:0.2em; color:#fff; margin-bottom:20px; }
+    .confirm-box .conf-detail { font-size:13px; letter-spacing:0.12em; text-transform:uppercase; color:rgba(255,255,255,0.5); line-height:2.2; }
+
+    /* empty state */
+    .empty-state {
+      padding:52px 20px;
+      text-align:center;
+      font-size:13px;
+      letter-spacing:0.2em;
+      text-transform:uppercase;
+      color:rgba(255,255,255,0.25);
+      border:2px solid rgba(255,255,255,0.08);
+      margin-top:28px;
+    }
+
+    @media(max-width:900px){
+      nav { gap:16px; padding:14px 20px; }
+      nav a { font-size:12px; }
+      .hero { padding:32px 20px 28px; flex-direction:column; gap:16px; }
+      .hero-sub { text-align:left; }
+      .panel { padding:32px 20px; }
+      .field-row, .field-row-3, .field-row-4 { grid-template-columns:1fr; }
+      .tabs { grid-template-columns:1fr 1fr; }
+      .tab-btn:nth-child(2) { border-right:none; }
+      .tab-btn:nth-child(3) { border-top:1px solid #fff; }
+      .tab-btn:nth-child(4) { border-top:1px solid #fff; border-right:none; }
+      .status-board-header, .status-row { grid-template-columns:1fr 2fr 1fr; }
+      .status-board-header span:nth-child(n+4),
+      .status-row span:nth-child(n+4) { display:none; }
+      .bus-grid, .train-grid { grid-template-columns:1fr 2fr 1fr 100px; }
+      .results-header span:nth-child(4),
+      .results-header span:nth-child(5),
+      .result-row span:nth-child(4),
+      .result-row span:nth-child(5) { display:none; }
+      .fare-box { flex-wrap:wrap; gap:24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html">Home</a>
+  <a href="public-transportation-tickets.html" class="active">Public-Transportation-Tickets</a>
+  <a href="private-transportation.html">Private-Transportation</a>
+  <a href="explore.html">Explore</a>
+</nav>
+
+<div class="page">
+
+  <!-- HERO -->
+  <div class="hero">
+    <h1>Public<br>Transport.</h1>
+    <div class="hero-sub">
+      Tiruchirappalli<br>
+      Bus · Train · Suburban<br>
+      Book · Track · Go
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('bus')">🚌 Bus Routes</button>
+    <button class="tab-btn" onclick="switchTab('train')">🚂 Suburban Trains</button>
+    <button class="tab-btn" onclick="switchTab('fare')">🎟️ Fare Calculator</button>
+    <button class="tab-btn" onclick="switchTab('status')">📡 Live Status</button>
+  </div>
+
+  <!-- ══════════════════════════════════
+       TAB 1 — BUS ROUTES
+  ══════════════════════════════════ -->
+  <div class="panel active" id="panel-bus">
+    <div class="panel-title">Bus Routes &amp; Schedules</div>
+
+    <div class="s-label">Search Buses</div>
+    <div class="field-row">
+      <select id="bus-from">
+        <option value="">FROM — Select Stop</option>
+        <option>Trichy Central Bus Stand</option>
+        <option>Chatram Bus Stand</option>
+        <option>Srirangam Bus Stand</option>
+        <option>Thillai Nagar Bus Stop</option>
+        <option>BHEL Township Stop</option>
+        <option>Airport</option>
+        <option>Ariyamangalam</option>
+        <option>Puthur</option>
+        <option>KK Nagar</option>
+        <option>Woraiyur</option>
+      </select>
+      <select id="bus-to">
+        <option value="">TO — Select Stop</option>
+        <option>Trichy Central Bus Stand</option>
+        <option>Chatram Bus Stand</option>
+        <option>Srirangam Bus Stand</option>
+        <option>Thillai Nagar Bus Stop</option>
+        <option>BHEL Township Stop</option>
+        <option>Airport</option>
+        <option>Ariyamangalam</option>
+        <option>Puthur</option>
+        <option>KK Nagar</option>
+        <option>Woraiyur</option>
+      </select>
+    </div>
+    <div class="field-row-3">
+      <select id="bus-type">
+        <option value="">BUS TYPE — ALL</option>
+        <option>Ordinary</option>
+        <option>Express</option>
+        <option>Town Bus</option>
+        <option>Mini Bus</option>
+      </select>
+      <input type="date" id="bus-date"/>
+      <select id="bus-passengers">
+        <option>1 Passenger</option>
+        <option>2 Passengers</option>
+        <option>3 Passengers</option>
+        <option>4 Passengers</option>
+        <option>5 Passengers</option>
+      </select>
+    </div>
+    <button class="action-btn" onclick="searchBuses()">Search Buses</button>
+
+    <div id="bus-results"></div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       TAB 2 — SUBURBAN TRAINS
+  ══════════════════════════════════ -->
+  <div class="panel" id="panel-train">
+    <div class="panel-title">Suburban Trains</div>
+
+    <div class="s-label">Search Trains</div>
+    <div class="field-row">
+      <select id="train-from">
+        <option value="">FROM — Select Station</option>
+        <option>Trichy Junction (TPJ)</option>
+        <option>Srirangam</option>
+        <option>Golden Rock</option>
+        <option>Lalgudi</option>
+        <option>Ariyalur</option>
+        <option>Vriddhachalam</option>
+        <option>Kumbakonam</option>
+        <option>Thanjavur</option>
+        <option>Karur</option>
+        <option>Dindigul</option>
+      </select>
+      <select id="train-to">
+        <option value="">TO — Select Station</option>
+        <option>Trichy Junction (TPJ)</option>
+        <option>Srirangam</option>
+        <option>Golden Rock</option>
+        <option>Lalgudi</option>
+        <option>Ariyalur</option>
+        <option>Vriddhachalam</option>
+        <option>Kumbakonam</option>
+        <option>Thanjavur</option>
+        <option>Karur</option>
+        <option>Dindigul</option>
+      </select>
+    </div>
+    <div class="field-row-4">
+      <input type="date" id="train-date"/>
+      <select id="train-class">
+        <option>General (2nd Class)</option>
+        <option>Sleeper (SL)</option>
+        <option>AC 3 Tier (3A)</option>
+        <option>AC 2 Tier (2A)</option>
+        <option>AC First (1A)</option>
+      </select>
+      <select id="train-quota">
+        <option>General Quota</option>
+        <option>Ladies Quota</option>
+        <option>Senior Citizen</option>
+        <option>Tatkal</option>
+      </select>
+      <select id="train-passengers">
+        <option>1 Passenger</option>
+        <option>2 Passengers</option>
+        <option>3 Passengers</option>
+        <option>4 Passengers</option>
+        <option>5 Passengers</option>
+      </select>
+    </div>
+    <button class="action-btn" onclick="searchTrains()">Search Trains</button>
+
+    <div id="train-results"></div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       TAB 3 — FARE CALCULATOR
+  ══════════════════════════════════ -->
+  <div class="panel" id="panel-fare">
+    <div class="panel-title">Fare Calculator</div>
+
+    <div class="s-label">Select Journey Details</div>
+    <div class="field-row">
+      <select id="fare-mode" onchange="calcFare()">
+        <option value="">MODE — Select</option>
+        <option value="ordinary">Ordinary Bus</option>
+        <option value="express">Express Bus</option>
+        <option value="town">Town Bus</option>
+        <option value="general">Train — General</option>
+        <option value="sleeper">Train — Sleeper</option>
+        <option value="ac3">Train — AC 3 Tier</option>
+        <option value="ac2">Train — AC 2 Tier</option>
+      </select>
+      <select id="fare-from" onchange="calcFare()">
+        <option value="">FROM — Stop / Station</option>
+        <option value="central_bus">Trichy Central Bus Stand</option>
+        <option value="chatram">Chatram Bus Stand</option>
+        <option value="srirangam_bus">Srirangam Bus Stand</option>
+        <option value="thillai">Thillai Nagar</option>
+        <option value="bhel">BHEL Township</option>
+        <option value="airport">Airport</option>
+        <option value="trichy_jn">Trichy Junction (TPJ)</option>
+        <option value="srirangam_rly">Srirangam Rly Stn</option>
+        <option value="golden_rock">Golden Rock</option>
+        <option value="lalgudi">Lalgudi</option>
+        <option value="kumbakonam">Kumbakonam</option>
+        <option value="thanjavur">Thanjavur</option>
+      </select>
+    </div>
+    <div class="field-row">
+      <select id="fare-to" onchange="calcFare()">
+        <option value="">TO — Stop / Station</option>
+        <option value="central_bus">Trichy Central Bus Stand</option>
+        <option value="chatram">Chatram Bus Stand</option>
+        <option value="srirangam_bus">Srirangam Bus Stand</option>
+        <option value="thillai">Thillai Nagar</option>
+        <option value="bhel">BHEL Township</option>
+        <option value="airport">Airport</option>
+        <option value="trichy_jn">Trichy Junction (TPJ)</option>
+        <option value="srirangam_rly">Srirangam Rly Stn</option>
+        <option value="golden_rock">Golden Rock</option>
+        <option value="lalgudi">Lalgudi</option>
+        <option value="kumbakonam">Kumbakonam</option>
+        <option value="thanjavur">Thanjavur</option>
+      </select>
+      <select id="fare-pax" onchange="calcFare()">
+        <option value="1">1 Passenger</option>
+        <option value="2">2 Passengers</option>
+        <option value="3">3 Passengers</option>
+        <option value="4">4 Passengers</option>
+        <option value="5">5 Passengers</option>
+      </select>
+    </div>
+
+    <div class="fare-box">
+      <div class="fare-item">
+        <span class="fare-label">Distance</span>
+        <span class="fare-value muted" id="fare-dist">— KM</span>
+      </div>
+      <div class="fare-divider"></div>
+      <div class="fare-item">
+        <span class="fare-label">Base Fare</span>
+        <span class="fare-value muted" id="fare-base">₹—</span>
+      </div>
+      <div class="fare-divider"></div>
+      <div class="fare-item">
+        <span class="fare-label">Total Fare</span>
+        <span class="fare-value muted" id="fare-total">₹—</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       TAB 4 — LIVE STATUS
+  ══════════════════════════════════ -->
+  <div class="panel" id="panel-status">
+    <div class="panel-title">Live Status Board</div>
+
+    <div class="s-label">Current Departures — Trichy Central &amp; TPJ</div>
+
+    <div class="status-board">
+      <div class="status-board-header">
+        <span>No.</span>
+        <span>Route / Train</span>
+        <span>Departs</span>
+        <span>Platform</span>
+        <span>ETA</span>
+        <span>Status</span>
+      </div>
+
+      <!-- Bus rows -->
+      <div class="status-row"><span>1A</span><span>Central → Srirangam</span><span>06:15</span><span>Bay 3</span><span>06:55</span><span class="status-on-time">ON TIME</span></div>
+      <div class="status-row"><span>7C</span><span>Central → BHEL</span><span>06:30</span><span>Bay 7</span><span>07:20</span><span class="status-delayed">DELAYED +12</span></div>
+      <div class="status-row"><span>15E</span><span>Chatram → Airport</span><span>06:45</span><span>Bay 1</span><span>07:15</span><span class="status-on-time">ON TIME</span></div>
+      <div class="status-row"><span>22</span><span>Central → Thillai Nagar</span><span>07:00</span><span>Bay 5</span><span>07:35</span><span class="status-on-time">ON TIME</span></div>
+      <div class="status-row"><span>TPJ EXP</span><span>Trichy → Kumbakonam</span><span>07:10</span><span>PF 2</span><span>08:55</span><span class="status-on-time">ON TIME</span></div>
+      <div class="status-row"><span>6135</span><span>Trichy → Chennai Egmore</span><span>07:25</span><span>PF 1</span><span>13:10</span><span class="status-delayed">DELAYED +8</span></div>
+      <div class="status-row"><span>3B</span><span>Central → KK Nagar</span><span>07:30</span><span>Bay 9</span><span>08:00</span><span class="status-on-time">ON TIME</span></div>
+      <div class="status-row"><span>6232</span><span>Trichy → Madurai</span><span>07:40</span><span>PF 3</span><span>09:30</span><span class="status-cancelled">CANCELLED</span></div>
+      <div class="status-row"><span>9X</span><span>Chatram → Woraiyur</span><span>07:45</span><span>Bay 2</span><span>08:10</span><span class="status-on-time">ON TIME</span></div>
+      <div class="status-row"><span>SUB-1</span><span>TPJ → Golden Rock Local</span><span>08:00</span><span>PF 4</span><span>08:22</span><span class="status-on-time">ON TIME</span></div>
+      <div class="status-row"><span>44</span><span>Central → Puthur</span><span>08:05</span><span>Bay 6</span><span>08:40</span><span class="status-delayed">DELAYED +5</span></div>
+      <div class="status-row"><span>6040</span><span>Trichy → Coimbatore</span><span>08:15</span><span>PF 2</span><span>11:45</span><span class="status-on-time">ON TIME</span></div>
+    </div>
+
+    <div style="margin-top:20px; font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:rgba(255,255,255,0.3);">
+      ↻ Status refreshes every 5 minutes &nbsp;·&nbsp; Last updated: just now
+    </div>
+  </div>
+
+</div><!-- /page -->
+
+<!-- ══════════════════════════════════
+     BOOKING MODAL
+══════════════════════════════════ -->
+<div class="modal-backdrop" id="modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕ Close</button>
+    <h2 id="modal-title">Book Ticket</h2>
+    <div style="margin-bottom:24px; font-size:13px; letter-spacing:0.12em; text-transform:uppercase; color:rgba(255,255,255,0.45); line-height:2;" id="modal-info"></div>
+
+    <div class="s-label" style="margin-bottom:8px;">Passenger Name</div>
+    <div class="field-row" style="margin-bottom:16px;">
+      <input type="text" id="pax-name" placeholder="Full Name"/>
+    </div>
+
+    <div class="s-label" style="margin-bottom:8px;">Mobile Number</div>
+    <div class="field-row" style="margin-bottom:16px;">
+      <input type="text" id="pax-mobile" placeholder="10-Digit Mobile"/>
+    </div>
+
+    <div class="s-label" style="margin-bottom:8px;">Payment Method</div>
+    <div class="field-row" style="margin-bottom:24px;">
+      <select id="pax-payment">
+        <option>UPI / GPay</option>
+        <option>Debit Card</option>
+        <option>Credit Card</option>
+        <option>Net Banking</option>
+        <option>Cash at Counter</option>
+      </select>
+    </div>
+
+    <button class="modal-confirm" onclick="confirmBooking()">Confirm &amp; Pay</button>
+
+    <!-- Confirmation -->
+    <div class="confirm-box" id="confirm-box">
+      <div class="conf-title">✓ Booking Confirmed</div>
+      <div class="conf-ref" id="conf-ref">TRY-000000</div>
+      <div class="conf-detail" id="conf-detail"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  /* ── Tab switching ── */
+  function switchTab(tab) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelector(`[onclick="switchTab('${tab}')"]`).classList.add('active');
+    document.getElementById(`panel-${tab}`).classList.add('active');
+  }
+
+  /* ── Location coordinates for distance ── */
+  const STOPS = {
+    central_bus:   { name:"Trichy Central Bus Stand",  lat:10.8050, lng:78.6856 },
+    chatram:       { name:"Chatram Bus Stand",           lat:10.8231, lng:78.6917 },
+    srirangam_bus: { name:"Srirangam Bus Stand",         lat:10.8636, lng:78.6921 },
+    thillai:       { name:"Thillai Nagar",               lat:10.8189, lng:78.6985 },
+    bhel:          { name:"BHEL Township",               lat:10.9081, lng:78.7295 },
+    airport:       { name:"Airport",                     lat:10.7651, lng:78.7099 },
+    trichy_jn:     { name:"Trichy Junction (TPJ)",       lat:10.8161, lng:78.6844 },
+    srirangam_rly: { name:"Srirangam Rly Stn",           lat:10.8606, lng:78.7003 },
+    golden_rock:   { name:"Golden Rock",                 lat:10.8420, lng:78.7312 },
+    lalgudi:       { name:"Lalgudi",                     lat:10.8697, lng:78.8156 },
+    kumbakonam:    { name:"Kumbakonam",                  lat:10.9602, lng:79.3845 },
+    thanjavur:     { name:"Thanjavur",                   lat:10.7905, lng:79.1378 },
+  };
+
+  function haversine(lat1,lng1,lat2,lng2) {
+    const R=6371, d2r=Math.PI/180;
+    const dL=(lat2-lat1)*d2r, dG=(lng2-lng1)*d2r;
+    const a=Math.sin(dL/2)**2+Math.cos(lat1*d2r)*Math.cos(lat2*d2r)*Math.sin(dG/2)**2;
+    return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+  }
+
+  /* ── Bus search ── */
+  const BUS_DATA = [
+    { no:'1A',  type:'Ordinary', dep:'06:15',arr:'06:55',dur:'40m',fare:12,seats:18 },
+    { no:'7C',  type:'Express',  dep:'06:30',arr:'07:10',dur:'40m',fare:18,seats:6  },
+    { no:'15E', type:'Town Bus', dep:'07:00',arr:'07:40',dur:'40m',fare:10,seats:24 },
+    { no:'22',  type:'Ordinary', dep:'07:30',arr:'08:10',dur:'40m',fare:12,seats:12 },
+    { no:'33X', type:'Express',  dep:'08:00',arr:'08:35',dur:'35m',fare:18,seats:3  },
+    { no:'44',  type:'Mini Bus', dep:'08:30',arr:'09:15',dur:'45m',fare:15,seats:20 },
+  ];
+
+  function searchBuses() {
+    const from = document.getElementById('bus-from').value;
+    const to   = document.getElementById('bus-to').value;
+    const el   = document.getElementById('bus-results');
+    if (!from || !to) { el.innerHTML=`<div class="empty-state">Please select both From and To stops</div>`; return; }
+    if (from===to)    { el.innerHTML=`<div class="empty-state">From and To cannot be the same</div>`; return; }
+
+    let html = `<div class="results-wrap">
+      <div class="results-header bus-grid">
+        <span>Bus No.</span><span>Route</span><span>Departs</span><span>Arrives</span><span>Fare</span><span>Book</span>
+      </div>`;
+    BUS_DATA.forEach(b => {
+      html += `<div class="result-row bus-grid">
+        <span><strong>${b.no}</strong></span>
+        <span>${from} → ${to}<br><span style="font-size:11px;opacity:0.4;letter-spacing:0.1em">${b.type} · ${b.dur}</span></span>
+        <span>${b.dep}</span>
+        <span>${b.arr}</span>
+        <span>₹${b.fare}<br><span style="font-size:11px;opacity:0.4">${b.seats} seats</span></span>
+        <span><button class="book-row-btn" onclick="openModal('BUS ${b.no}','${from}','${to}','${b.dep}','₹${b.fare}')">Book</button></span>
+      </div>`;
+    });
+    html += `</div>`;
+    el.innerHTML = html;
+  }
+
+  /* ── Train search ── */
+  const TRAIN_DATA = [
+    { no:'6135', name:'Rockfort Express',    dep:'07:25',arr:'13:10',dur:'5h 45m',fare:145,avail:'Available' },
+    { no:'6040', name:'Cheran Express',      dep:'08:15',arr:'11:45',dur:'3h 30m',fare:210,avail:'Available' },
+    { no:'6232', name:'Kaveri Express',      dep:'09:40',arr:'12:50',dur:'3h 10m',fare:185,avail:'Waitlist 4' },
+    { no:'6043', name:'Pallavan Express',    dep:'11:00',arr:'15:30',dur:'4h 30m',fare:160,avail:'Available' },
+    { no:'6175', name:'Trichy Intercity',    dep:'14:30',arr:'19:20',dur:'4h 50m',fare:195,avail:'Available' },
+    { no:'SUB-1', name:'TPJ Local Suburban', dep:'08:00',arr:'08:22',dur:'22m',   fare:15, avail:'Available' },
+  ];
+
+  function searchTrains() {
+    const from = document.getElementById('train-from').value;
+    const to   = document.getElementById('train-to').value;
+    const cls  = document.getElementById('train-class').value;
+    const el   = document.getElementById('train-results');
+    if (!from || !to) { el.innerHTML=`<div class="empty-state">Please select both From and To stations</div>`; return; }
+    if (from===to)    { el.innerHTML=`<div class="empty-state">From and To cannot be the same</div>`; return; }
+
+    let html = `<div class="results-wrap">
+      <div class="results-header train-grid">
+        <span>Train No.</span><span>Name</span><span>Departs</span><span>Arrives</span><span>Fare (${cls})</span><span>Book</span>
+      </div>`;
+    TRAIN_DATA.forEach(t => {
+      const avail = t.avail === 'Available';
+      html += `<div class="result-row train-grid">
+        <span><strong>${t.no}</strong></span>
+        <span>${t.name}<br><span style="font-size:11px;opacity:0.4;letter-spacing:0.1em">${t.dur}</span></span>
+        <span>${t.dep}</span>
+        <span>${t.arr}</span>
+        <span>₹${t.fare}<br><span class="${avail?'status-on-time':'status-delayed'}" style="font-size:11px;">${t.avail}</span></span>
+        <span>${avail ? `<button class="book-row-btn" onclick="openModal('${t.name}','${from}','${to}','${t.dep}','₹${t.fare}')">Book</button>` : `<span style="font-size:11px;opacity:0.3;letter-spacing:0.1em;text-transform:uppercase">Waitlist</span>`}</span>
+      </div>`;
+    });
+    html += `</div>`;
+    el.innerHTML = html;
+  }
+
+  /* ── Fare calculator ── */
+  const FARE_RATES = {
+    ordinary:{ perKm:0.55, base:8  },
+    express: { perKm:0.80, base:12 },
+    town:    { perKm:0.50, base:6  },
+    general: { perKm:0.35, base:10 },
+    sleeper: { perKm:0.65, base:25 },
+    ac3:     { perKm:1.80, base:50 },
+    ac2:     { perKm:2.60, base:80 },
+  };
+
+  function calcFare() {
+    const mode = document.getElementById('fare-mode').value;
+    const from = document.getElementById('fare-from').value;
+    const to   = document.getElementById('fare-to').value;
+    const pax  = parseInt(document.getElementById('fare-pax').value);
+    const distEl  = document.getElementById('fare-dist');
+    const baseEl  = document.getElementById('fare-base');
+    const totalEl = document.getElementById('fare-total');
+
+    if (!mode || !from || !to || from===to) {
+      [distEl,baseEl,totalEl].forEach(e=>{ e.textContent=e===distEl?'— KM':'₹—'; e.classList.add('muted'); });
+      return;
+    }
+    const p = STOPS[from], d = STOPS[to];
+    if (!p || !d) return;
+    const dist = haversine(p.lat,p.lng,d.lat,d.lng);
+    const r = FARE_RATES[mode];
+    const base = Math.round(r.base + dist * r.perKm);
+    const total = base * pax;
+
+    distEl.textContent  = dist.toFixed(1) + ' KM'; distEl.classList.remove('muted');
+    baseEl.textContent  = '₹' + base;               baseEl.classList.remove('muted');
+    totalEl.textContent = '₹' + total;               totalEl.classList.remove('muted');
+  }
+
+  /* ── Modal ── */
+  let currentBooking = {};
+
+  function openModal(service, from, to, dep, fare) {
+    currentBooking = { service, from, to, dep, fare };
+    document.getElementById('modal-title').textContent = 'Book — ' + service;
+    document.getElementById('modal-info').innerHTML =
+      `${from}<br>↓<br>${to}<br>Departure: ${dep} &nbsp;·&nbsp; Fare: ${fare}`;
+    document.getElementById('confirm-box').classList.remove('show');
+    document.getElementById('pax-name').value = '';
+    document.getElementById('pax-mobile').value = '';
+    document.getElementById('modal').classList.add('open');
+  }
+
+  function closeModal() {
+    document.getElementById('modal').classList.remove('open');
+  }
+
+  function confirmBooking() {
+    const name   = document.getElementById('pax-name').value.trim();
+    const mobile = document.getElementById('pax-mobile').value.trim();
+    const pay    = document.getElementById('pax-payment').value;
+    if (!name || !mobile) { alert('Please enter your name and mobile number.'); return; }
+    const ref = 'TRY-' + Math.floor(100000 + Math.random()*900000);
+    document.getElementById('conf-ref').textContent = ref;
+    document.getElementById('conf-detail').innerHTML =
+      `Passenger: ${name}<br>Mobile: ${mobile}<br>Payment: ${pay}<br>Service: ${currentBooking.service}<br>${currentBooking.from} → ${currentBooking.to}<br>Dep: ${currentBooking.dep} · Fare: ${currentBooking.fare}`;
+    document.getElementById('confirm-box').classList.add('show');
+  }
+
+  /* close modal on backdrop click */
+  document.getElementById('modal').addEventListener('click', e => {
+    if (e.target === document.getElementById('modal')) closeModal();
+  });
+
+  /* Set today's date as default */
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('bus-date').value  = today;
+  document.getElementById('train-date').value = today;
+</script>
+</body>
+</html>

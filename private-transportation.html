@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Private Transportation — Tiruchirappalli</title>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      height: 100%;
+      background: #000;
+      color: #fff;
+      font-family: 'Anton', sans-serif;
+      overflow: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 40px;
+      padding: 20px 48px;
+      background: #000;
+      border-bottom: 1px solid #fff;
+    }
+
+   nav a {
+  font-family: 'Anton', sans-serif;
+  font-size: 25px;
+  letter-spacing: 0.1em;
+  color: #ffffff;
+  text-decoration: none;
+  text-transform: uppercase;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+  position: relative;
+  padding-bottom: 4px;
+  transition: color 0.3s;
+}
+
+    nav a:hover { text-decoration: underline; }
+    nav a.active { text-decoration: underline; }
+
+    /* LAYOUT */
+    .layout {
+      display: grid;
+      grid-template-columns: 680px 1fr;
+      height: 100vh;
+      padding-top: 57px;
+    }
+
+    /* LEFT PANEL */
+    .panel {
+      background: #000;
+      border-right: 1px solid #fff;
+      padding: 48px 52px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      overflow-y: auto;
+    }
+
+    .panel::-webkit-scrollbar { display: none; }
+
+    /* Hero heading */
+    .hero-heading {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(42px, 5.5vw, 72px);
+      line-height: 0.95;
+      letter-spacing: 0.01em;
+      text-transform: uppercase;
+      color: #fff;
+    }
+
+    /* Location buttons (styled like big rectangular buttons) */
+    .location-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .loc-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .loc-wrap select {
+      appearance: none;
+      background: #000;
+      border: 2px solid #fff;
+      color: #fff;
+      font-family: 'Anton', sans-serif;
+      font-weight: 400;
+      font-size: 15px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 18px 20px;
+      cursor: pointer;
+      outline: none;
+      width: 100%;
+    }
+
+    .loc-wrap select option {
+      background: #000;
+      color: #fff;
+      font-family: 'Anton', sans-serif;
+      font-weight: 400;
+      font-size: 14px;
+    }
+
+    .loc-wrap select:focus {
+      background: #fff;
+      color: #000;
+    }
+
+    /* Text input — same visual as dropdown, hidden by default */
+    .loc-wrap .custom-input {
+      display: none;
+      width: 100%;
+      background: #000;
+      border: 2px solid #fff;
+      color: #fff;
+      font-family: 'Anton', sans-serif;
+      font-weight: 400;
+      font-size: 15px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 18px 20px;
+      outline: none;
+    }
+
+    .loc-wrap .custom-input::placeholder {
+      color: rgba(255,255,255,0.4);
+    }
+
+    /* Back link below input */
+    .loc-wrap .back-link {
+      display: none;
+      font-family: 'Anton', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      cursor: pointer;
+      margin-top: 6px;
+      text-align: right;
+    }
+
+    .loc-wrap .back-link:hover { color: #fff; }
+
+    /* Travel Your Way container wraps header + ride options */
+    .travel-wrap {
+      border: 2px solid #fff;
+    }
+
+    .travel-label {
+      padding: 18px 24px;
+      font-family: 'Anton', sans-serif;
+      font-size: 18px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #fff;
+      text-align: center;
+      border-bottom: 2px solid #fff;
+    }
+
+    /* Ride selector */
+    .ride-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+    }
+
+    .ride-opt {
+      padding: 22px 14px;
+      text-align: left;
+      cursor: pointer;
+      font-family: 'Anton', sans-serif;
+      font-size: 14px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #fff;
+      border-right: 1px solid #fff;
+      transition: background 0.2s, color 0.2s;
+      user-select: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .ride-opt:last-child { border-right: none; }
+
+    .ride-opt .ride-type { font-size: 28px; display: block; }
+    .ride-opt .ride-name { font-size: 15px; letter-spacing: 0.1em; }
+    .ride-opt .ride-rate { font-size: 11px; letter-spacing: 0.04em; opacity: 0.6; }
+
+    .ride-opt.selected,
+    .ride-opt:hover {
+      background: #fff;
+      color: #000;
+    }
+
+    .ride-opt.selected .ride-rate,
+    .ride-opt:hover .ride-rate { opacity: 1; }
+
+    /* Info box */
+    .info-box {
+      border: 2px solid #fff;
+      padding: 20px 28px;
+      display: flex;
+      gap: 48px;
+      align-items: center;
+    }
+
+    .info-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .info-item .info-label {
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #fff;
+      opacity: 0.5;
+    }
+
+    .info-item .info-value {
+      font-family: 'Anton', sans-serif;
+      font-size: 32px;
+      letter-spacing: 0.04em;
+      color: #fff;
+    }
+
+    .info-item .info-value.empty { opacity: 0.3; }
+
+    /* Book Now */
+    .book-btn {
+      background: #fff;
+      color: #000;
+      border: 2px solid #fff;
+      padding: 22px;
+      font-family: 'Anton', sans-serif;
+      font-size: 28px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      cursor: pointer;
+      width: 100%;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .book-btn:hover {
+      background: #000;
+      color: #fff;
+    }
+
+    /* MAP */
+    #map { width: 100%; height: 100%; }
+
+    /* Leaflet popup overrides */
+    .leaflet-popup-content-wrapper {
+      background: #000 !important;
+      border: 2px solid #fff !important;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+      color: #fff !important;
+    }
+
+    .leaflet-popup-tip { background: #000 !important; }
+    .leaflet-popup-close-button { color: #fff !important; font-size: 18px !important; }
+
+    .popup-inner {
+      font-family: 'Anton', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #fff;
+      min-width: 220px;
+      padding: 6px 2px;
+    }
+
+    .popup-inner .p-emoji { font-size: 32px; display: block; text-align: center; margin-bottom: 10px; }
+    .popup-inner .p-driver { font-size: 20px; display: block; text-align: center; margin-bottom: 8px; }
+    .popup-inner .p-route { font-size: 13px; display: block; text-align: center; line-height: 1.6; margin-bottom: 10px; opacity: 0.7; }
+    .popup-inner .p-fare { font-size: 30px; display: block; text-align: center; }
+
+    /* Mobile */
+    @media (max-width: 860px) {
+      html, body { overflow: auto; }
+      .layout { grid-template-columns: 1fr; height: auto; }
+      #map { height: 60vw; min-height: 280px; }
+      .panel { padding: 28px 20px; }
+      nav { gap: 16px; padding: 14px 20px; }
+      .location-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="public-transportation-tickets.html">Public-Transportation-Tickets</a>
+    <a href="private-transportation.html" class="active">Private-Transportation</a>
+    <a href="explore.html">Explore</a>
+  </nav>
+
+  <div class="layout">
+
+    <!-- LEFT PANEL -->
+    <div class="panel">
+
+      <!-- Heading -->
+      <div class="hero-heading">
+        Your ride.<br>Your time.<br>Your destination.
+      </div>
+
+      <!-- Pick Up + Drop -->
+      <div class="location-row">
+        <div class="loc-wrap">
+          <select id="pickup" onchange="handleSelect(this, 'pickup-input', 'pickup-back')">
+            <option value="">PICK UP POINT 📍</option>
+            <option value="__type__">TYPE CUSTOM LOCATION</option>
+            <option value="central_bus">TRICHY CENTRAL BUS STAND</option>
+            <option value="chatram_bus">CHATRAM BUS STAND</option>
+            <option value="srirangam_bus">SRIRANGAM BUS STAND</option>
+            <option value="thillai_nagar">THILLAI NAGAR BUS STOP</option>
+            <option value="bhel">BHEL TOWNSHIP STOP</option>
+            <option value="airport">AIRPORT</option>
+            <option value="trichy_jn">TRICHY JUNCTION RLY STN</option>
+            <option value="srirangam_rly">SRIRANGAM RLY STN</option>
+            <option value="golden_rock">GOLDEN ROCK RLY STN</option>
+            <option value="lalgudi">LALGUDI RLY STN</option>
+          </select>
+          <input id="pickup-input" class="custom-input" type="text" placeholder="TYPE YOUR PICKUP..." oninput="updateFare()"/>
+          <span id="pickup-back" class="back-link" onclick="resetToDropdown('pickup', 'pickup-input', 'pickup-back')">← BACK TO LIST</span>
+        </div>
+        <div class="loc-wrap">
+          <select id="drop" onchange="handleSelect(this, 'drop-input', 'drop-back')">
+            <option value="">DROP LOCATION 📍</option>
+            <option value="__type__">TYPE CUSTOM LOCATION</option>
+            <option value="central_bus">TRICHY CENTRAL BUS STAND</option>
+            <option value="chatram_bus">CHATRAM BUS STAND</option>
+            <option value="srirangam_bus">SRIRANGAM BUS STAND</option>
+            <option value="thillai_nagar">THILLAI NAGAR BUS STOP</option>
+            <option value="bhel">BHEL TOWNSHIP STOP</option>
+            <option value="airport">AIRPORT</option>
+            <option value="trichy_jn">TRICHY JUNCTION RLY STN</option>
+            <option value="srirangam_rly">SRIRANGAM RLY STN</option>
+            <option value="golden_rock">GOLDEN ROCK RLY STN</option>
+            <option value="lalgudi">LALGUDI RLY STN</option>
+          </select>
+          <input id="drop-input" class="custom-input" type="text" placeholder="TYPE YOUR DROP..." oninput="updateFare()"/>
+          <span id="drop-back" class="back-link" onclick="resetToDropdown('drop', 'drop-input', 'drop-back')">← BACK TO LIST</span>
+        </div>
+      </div>
+
+      <!-- Travel Your Way + Ride options -->
+      <div class="travel-wrap">
+        <div class="travel-label">Travel Your Way</div>
+        <div class="ride-row">
+          <div class="ride-opt selected" id="card-bike" onclick="selectRide('bike')">
+            <span class="ride-type">🏍️</span>
+            <span class="ride-name">Bike</span>
+            <span class="ride-rate">₹6–12 / km</span>
+          </div>
+          <div class="ride-opt" id="card-auto" onclick="selectRide('auto')">
+            <span class="ride-type">🛺</span>
+            <span class="ride-name">Auto</span>
+            <span class="ride-rate">₹10–20 / km</span>
+          </div>
+          <div class="ride-opt" id="card-cab" onclick="selectRide('cab')">
+            <span class="ride-type">🚖</span>
+            <span class="ride-name">Cab</span>
+            <span class="ride-rate">₹13–30 / km</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Distance + Charges -->
+      <div class="info-box">
+        <div class="info-item">
+          <span class="info-label">Distance</span>
+          <span class="info-value empty" id="dist-display">XX KM</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Charges</span>
+          <span class="info-value empty" id="fare-display">₹XX</span>
+        </div>
+      </div>
+
+      <!-- Book Now -->
+      <button class="book-btn" onclick="bookNow()">Book Now</button>
+
+    </div>
+
+    <!-- MAP -->
+    <div id="map"></div>
+  </div>
+
+  <script>
+    /* ── Transform dropdown → text input when "Type Custom" selected ── */
+    function handleSelect(selectEl, inputId, backId) {
+      if (selectEl.value === '__type__') {
+        selectEl.style.display = 'none';
+        const inp = document.getElementById(inputId);
+        const back = document.getElementById(backId);
+        inp.style.display = 'block';
+        back.style.display = 'block';
+        inp.focus();
+      } else {
+        updateFare();
+      }
+    }
+
+    function resetToDropdown(selectId, inputId, backId) {
+      const sel = document.getElementById(selectId);
+      const inp = document.getElementById(inputId);
+      const back = document.getElementById(backId);
+      sel.style.display = '';
+      sel.value = '';
+      inp.style.display = 'none';
+      inp.value = '';
+      back.style.display = 'none';
+      updateFare();
+    }
+
+    /* Helper: get current value from either dropdown or custom input */
+    function getLocValue(selectId, inputId) {
+      const sel = document.getElementById(selectId);
+      const inp = document.getElementById(inputId);
+      if (inp.style.display === 'block') {
+        return inp.value.trim() ? '__custom__' : '';
+      }
+      return sel.value;
+    }
+
+    const LOCATIONS = {
+      central_bus:   { name: "Trichy Central Bus Stand",       lat: 10.8050, lng: 78.6856 },
+      chatram_bus:   { name: "Chatram Bus Stand",               lat: 10.8231, lng: 78.6917 },
+      srirangam_bus: { name: "Srirangam Bus Stand",             lat: 10.8636, lng: 78.6921 },
+      thillai_nagar: { name: "Thillai Nagar Bus Stop",          lat: 10.8189, lng: 78.6985 },
+      bhel:          { name: "BHEL Township Stop",              lat: 10.9081, lng: 78.7295 },
+      airport:       { name: "Trichy Airport",                  lat: 10.7651, lng: 78.7099 },
+      trichy_jn:     { name: "Trichy Junction Rly Stn",         lat: 10.8161, lng: 78.6844 },
+      srirangam_rly: { name: "Srirangam Rly Stn",               lat: 10.8606, lng: 78.7003 },
+      golden_rock:   { name: "Golden Rock Rly Stn",             lat: 10.8420, lng: 78.7312 },
+      lalgudi:       { name: "Lalgudi Rly Stn",                 lat: 10.8697, lng: 78.8156 },
+    };
+
+    const RATES = {
+      bike: { rate: 9,  emoji: "🏍️", label: "Bike" },
+      auto: { rate: 15, emoji: "🛺",  label: "Auto" },
+      cab:  { rate: 22, emoji: "🚖",  label: "Cab"  },
+    };
+
+    let selectedRide = 'bike';
+    let routeLine = null, pickupMarker = null, dropMarker = null;
+
+    const map = L.map('map', { center: [10.8231, 78.6917], zoom: 13 });
+
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; CARTO',
+      subdomains: 'abcd',
+      maxZoom: 19,
+    }).addTo(map);
+
+    // Remove Leaflet attribution
+    map.attributionControl.remove();
+
+    function markerIcon() {
+      return L.divIcon({
+        className: '',
+        html: `<div style="width:12px;height:12px;border-radius:50%;background:#fff;border:2px solid #000;"></div>`,
+        iconSize: [12,12], iconAnchor: [6,6], popupAnchor: [0,-10],
+      });
+    }
+
+    function haversine(lat1, lng1, lat2, lng2) {
+      const R = 6371, d2r = Math.PI/180;
+      const dLat = (lat2-lat1)*d2r, dLng = (lng2-lng1)*d2r;
+      const a = Math.sin(dLat/2)**2 + Math.cos(lat1*d2r)*Math.cos(lat2*d2r)*Math.sin(dLng/2)**2;
+      return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    }
+
+    function selectRide(type) {
+      selectedRide = type;
+      ['bike','auto','cab'].forEach(t => document.getElementById('card-'+t).classList.remove('selected'));
+      document.getElementById('card-'+type).classList.add('selected');
+      updateFare();
+    }
+
+    function updateFare() {
+      const pv = document.getElementById('pickup').value;
+      const dv = document.getElementById('drop').value;
+      const distEl = document.getElementById('dist-display');
+      const fareEl = document.getElementById('fare-display');
+
+      if (!pv || !dv || pv==='__custom__' || dv==='__custom__' || pv===dv) {
+        distEl.textContent = 'XX KM'; distEl.classList.add('empty');
+        fareEl.textContent = '₹XX';  fareEl.classList.add('empty');
+        return;
+      }
+
+      const p = LOCATIONS[pv], d = LOCATIONS[dv];
+      const dist = haversine(p.lat, p.lng, d.lat, d.lng);
+      const fare = Math.round(dist * RATES[selectedRide].rate);
+
+      distEl.textContent = dist.toFixed(1) + ' KM'; distEl.classList.remove('empty');
+      fareEl.textContent = '₹' + fare;              fareEl.classList.remove('empty');
+    }
+
+    function bookNow() {
+      const pv = getLocValue('pickup', 'pickup-input');
+      const dv = getLocValue('drop', 'drop-input');
+
+      if (!pv || !dv) { alert('Please select both Pickup and Drop locations.'); return; }
+      if (pv === dv)  { alert('Pickup and drop cannot be the same!'); return; }
+      if (pv === '__custom__' || dv === '__custom__') { alert('Distance calculation is only available for locations from the list. Custom locations will be supported soon!'); return; }
+
+      const p = LOCATIONS[pv], d = LOCATIONS[dv];
+      const dist = haversine(p.lat, p.lng, d.lat, d.lng);
+      const fare = Math.round(dist * RATES[selectedRide].rate);
+      const ride = RATES[selectedRide];
+
+      if (routeLine)    { map.removeLayer(routeLine); }
+      if (pickupMarker) { map.removeLayer(pickupMarker); }
+      if (dropMarker)   { map.removeLayer(dropMarker); }
+
+      pickupMarker = L.marker([p.lat, p.lng], { icon: markerIcon() }).addTo(map);
+      dropMarker   = L.marker([d.lat, d.lng], { icon: markerIcon() }).addTo(map);
+
+      routeLine = L.polyline([[p.lat, p.lng],[d.lat, d.lng]], {
+        color: '#ffffff', weight: 2, opacity: 1, dashArray: '6 5',
+      }).addTo(map);
+
+      map.fitBounds([[p.lat, p.lng],[d.lat, d.lng]], { padding: [60,60] });
+
+      dropMarker.bindPopup(`
+        <div class="popup-inner">
+          <span class="p-emoji">${ride.emoji}</span>
+          <span class="p-driver">C. Kumaran</span>
+          <span class="p-route">${p.name}<br>↓<br>${d.name}</span>
+          <span class="p-fare">₹${fare}</span>
+        </div>
+      `, { maxWidth: 260 }).openPopup();
+    }
+  </script>
+</body>
+</html>

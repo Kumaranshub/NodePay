@@ -1,12 +1,13 @@
-# Tiruchirappalli Travel Website
+**Tiruchirappalli Travel Web Experience**
 
-A modern travel interface for Tiruchirappalli featuring:
+I recently built a modern web interface designed to help people explore and navigate Tiruchirappalli more easily.
 
-- Transport booking interface
-- Explore page with immersive UI
-- Public transit planner
-- Private ride booking
+The platform includes:
+• An immersive Explore section showcasing key landmarks
+• A public transport planner for buses and trains
+• A private ride booking interface
+• A clean, responsive UI focused on usability and visual storytelling
 
-Built using pure HTML/CSS/JS.
+The entire project was developed using **pure HTML, CSS, and JavaScript**, focusing on front-end architecture, layout design, and interactive user experience.
 
-Created by Kumaran.
+This project reflects my growing interest in **UI/UX design, product thinking, and building meaningful digital experiences**.

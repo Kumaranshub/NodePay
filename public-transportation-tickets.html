@@ -6,317 +6,185 @@
   <title>Public Transportation — Tiruchirappalli</title>
   <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet"/>
   <style>
-    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-    html, body { height:100%; font-family:'Anton', sans-serif; background:#000; color:#fff; overflow-x:hidden; }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    html,body{font-family:'Anton',sans-serif;background:#000;color:#fff;overflow-x:hidden;}
 
-    /* ═══ NAV ═══ */
-    nav {
-      position:fixed; top:0; left:0; right:0; z-index:1000;
-      display:flex; justify-content:flex-end; align-items:center;
-      gap:40px; padding:20px 48px;
-      background:#000; border-bottom:1px solid #fff;
-    }
-    nav a { font-family:'Anton',sans-serif; font-size:15px; letter-spacing:0.1em; text-transform:uppercase; color:#fff; text-decoration:none; }
-    nav a:hover { text-decoration:underline; }
-    nav a.active { text-decoration:underline; }
 
-    /* ═══ PAGE WRAPPER ═══ */
-    .page { padding-top:57px; }
 
-    /* ═══ HERO BANNER ═══ */
-    .hero {
-      border-bottom:2px solid #fff;
-      padding:52px 56px 44px;
-      display:flex;
-      justify-content:space-between;
-      align-items:flex-end;
-    }
-    .hero h1 {
-      font-size:clamp(48px,7vw,96px);
-      line-height:0.9;
-      letter-spacing:0.01em;
-      text-transform:uppercase;
-    }
-    .hero-sub {
-      font-size:13px;
-      letter-spacing:0.22em;
-      text-transform:uppercase;
-      color:rgba(255,255,255,0.4);
-      text-align:right;
-      line-height:2;
-    }
 
-    /* ═══ TABS ═══ */
-    .tabs {
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      border-bottom:2px solid #fff;
-    }
-    .tab-btn {
-      padding:20px 10px;
-      font-family:'Anton',sans-serif;
-      font-size:14px;
-      letter-spacing:0.12em;
-      text-transform:uppercase;
-      color:rgba(255,255,255,0.45);
-      background:#000;
-      border:none;
-      border-right:1px solid #fff;
-      cursor:pointer;
-      transition:background 0.2s,color 0.2s;
-    }
-    .tab-btn:last-child { border-right:none; }
-    .tab-btn:hover { background:#fff; color:#000; }
-    .tab-btn.active { background:#fff; color:#000; }
 
-    /* ═══ PANELS ═══ */
-    .panel { display:none; padding:48px 56px; }
-    .panel.active { display:block; }
 
-    .panel-title {
-      font-size:clamp(28px,3vw,42px);
-      letter-spacing:0.04em;
-      text-transform:uppercase;
-      margin-bottom:36px;
-      padding-bottom:20px;
-      border-bottom:1px solid rgba(255,255,255,0.15);
+
+
+
+
+    nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;justify-content:flex-end;align-items:center;gap:40px;padding:20px 48px;background:#000;border-bottom:1px solid #fff;}
+    nav a{font-family:'Anton',sans-serif;font-size:25px;letter-spacing:0.1em;text-transform:uppercase;color:#fff;text-decoration:none;}
+    nav a:hover,nav a.active{text-decoration:underline;}
+
+    .page{padding-top:57px;}
+
+    .hero{border-bottom:2px solid #fff;padding:52px 56px 44px;display:flex;justify-content:space-between;align-items:flex-end;}
+    .hero h1{font-size:clamp(40px,6vw,82px);line-height:0.9;letter-spacing:0.01em;text-transform:uppercase;}
+    .hero-sub{font-size:13px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.4);text-align:right;line-height:2.2;}
+
+
+    .tabs{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:2px solid #fff;}
+    .tab-btn{padding:20px 10px;font-family:'Anton',sans-serif;font-size:14px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.45);background:#000;border:none;border-right:1px solid #fff;cursor:pointer;transition:background 0.2s,color 0.2s;}
+    .tab-btn:last-child{border-right:none;}
+    .tab-btn:hover,.tab-btn.active{background:#fff;color:#000;}
+
+
+    .panel{display:none;padding:48px 56px;}
+    .panel.active{display:block;}
+    .panel-title{font-size:clamp(24px,2.8vw,38px);letter-spacing:0.04em;text-transform:uppercase;margin-bottom:32px;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,0.15);}
+
+
+    .s-label{font-size:11px;letter-spacing:0.28em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:14px;}
+
+
+    .field-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+    .field-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px;}
+    .field-row-4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:16px;margin-bottom:16px;}
+    .field-full{margin-bottom:16px;}
+
+    select,input[type="date"],input[type="number"],input[type="text"],input[type="email"],input[type="tel"],input[type="file"]{
+      appearance:none;background:#000;border:2px solid #fff;color:#fff;font-family:'Anton',sans-serif;
+      font-size:14px;letter-spacing:0.06em;text-transform:uppercase;padding:15px 18px;width:100%;outline:none;cursor:pointer;
     }
+    select option{background:#000;color:#fff;}
+    select:focus,input:focus{background:#fff;color:#000;}
+    input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(1);}
+    input[type="file"]{cursor:pointer;padding:12px 18px;}
+    input.error{border-color:rgba(255,80,80,0.8);}
+    .err-msg{font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,80,80,0.8);margin-top:4px;display:none;}
+    .err-msg.show{display:block;}
 
-    /* ═══ SECTION LABEL ═══ */
-    .s-label {
-      font-size:11px;
-      letter-spacing:0.28em;
-      text-transform:uppercase;
-      color:rgba(255,255,255,0.4);
-      margin-bottom:16px;
-    }
 
-    /* ═══ FORM ELEMENTS ═══ */
-    .field-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:20px; }
-    .field-row-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-bottom:20px; }
-    .field-row-4 { display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:16px; margin-bottom:20px; }
+    .action-btn{background:#fff;color:#000;border:2px solid #fff;padding:16px 36px;font-family:'Anton',sans-serif;font-size:17px;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;transition:background 0.2s,color 0.2s;margin-top:4px;}
+    .action-btn:hover{background:#000;color:#fff;}
+    .action-btn:disabled{opacity:0.4;cursor:not-allowed;}
 
-    select, input[type="date"], input[type="number"], input[type="text"] {
-      appearance:none;
-      background:#000;
-      border:2px solid #fff;
-      color:#fff;
-      font-family:'Anton',sans-serif;
-      font-size:14px;
-      letter-spacing:0.06em;
-      text-transform:uppercase;
-      padding:16px 18px;
-      width:100%;
-      outline:none;
-      cursor:pointer;
-    }
-    select option { background:#000; color:#fff; }
-    select:focus, input:focus { background:#fff; color:#000; }
-    input[type="date"]::-webkit-calendar-picker-indicator { filter:invert(1); }
 
-    /* ═══ BIG ACTION BUTTON ═══ */
-    .action-btn {
-      background:#fff; color:#000;
-      border:2px solid #fff;
-      padding:18px 40px;
-      font-family:'Anton',sans-serif;
-      font-size:18px;
-      letter-spacing:0.14em;
-      text-transform:uppercase;
-      cursor:pointer;
-      transition:background 0.2s,color 0.2s;
-      margin-top:8px;
-    }
-    .action-btn:hover { background:#000; color:#fff; }
+    .results-wrap{margin-top:32px;border:2px solid #fff;}
+    .results-header{display:grid;background:#fff;color:#000;padding:14px 20px;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;gap:8px;}
+    .result-row{display:grid;border-top:1px solid rgba(255,255,255,0.12);padding:16px 20px;align-items:center;gap:8px;transition:background 0.2s;cursor:pointer;}
+    .result-row:hover{background:rgba(255,255,255,0.04);}
+    .bus-grid{grid-template-columns:80px 2fr 100px 100px 100px 110px;}
+    .train-grid{grid-template-columns:90px 2fr 100px 100px 120px 110px;}
+    .row-sub{font-size:11px;opacity:0.4;letter-spacing:0.08em;margin-top:3px;}
+    .book-row-btn{background:#fff;color:#000;border:none;padding:8px 16px;font-family:'Anton',sans-serif;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:background 0.2s,color 0.2s,border 0.2s;}
+    .book-row-btn:hover{background:#000;color:#fff;border:1px solid #fff;}
+    .avail-ok{font-size:11px;letter-spacing:0.08em;text-transform:uppercase;}
+    .avail-wait{font-size:11px;letter-spacing:0.08em;text-transform:uppercase;opacity:0.4;}
+    .empty-state{padding:48px 20px;text-align:center;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.2);border:2px solid rgba(255,255,255,0.06);margin-top:24px;}
 
-    /* ═══ RESULTS TABLE ═══ */
-    .results-wrap { margin-top:36px; border:2px solid #fff; }
 
-    .results-header {
-      display:grid;
-      background:#fff;
-      color:#000;
-      padding:14px 20px;
-      font-size:12px;
-      letter-spacing:0.2em;
-      text-transform:uppercase;
-    }
+    .progress-bar{display:flex;margin-bottom:40px;border:2px solid #fff;}
+    .progress-step{flex:1;padding:16px 8px;text-align:center;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.3);border-right:1px solid #fff;transition:background 0.3s,color 0.3s;cursor:default;}
+    .progress-step:last-child{border-right:none;}
+    .progress-step.done{background:#fff;color:#000;}
+    .progress-step.active{background:rgba(255,255,255,0.12);color:#fff;}
 
-    .result-row {
-      display:grid;
-      border-top:1px solid rgba(255,255,255,0.15);
-      padding:18px 20px;
-      align-items:center;
-      cursor:pointer;
-      transition:background 0.2s;
-    }
-    .result-row:hover { background:rgba(255,255,255,0.05); }
+    .pass-step{display:none;}
+    .pass-step.active{display:block;}
 
-    .result-row td, .results-header td { padding:0; }
+    .step-title{font-size:clamp(22px,2.5vw,34px);letter-spacing:0.04em;text-transform:uppercase;margin-bottom:28px;}
 
-    /* Bus results grid */
-    .bus-grid { grid-template-columns:1fr 2fr 1fr 1fr 1fr 120px; }
+    .pass-nav{display:flex;gap:16px;margin-top:28px;}
+    .btn-back{background:#000;color:#fff;border:2px solid #fff;padding:14px 32px;font-family:'Anton',sans-serif;font-size:15px;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;transition:background 0.2s,color 0.2s;}
+    .btn-back:hover{background:#fff;color:#000;}
+    .btn-next{background:#fff;color:#000;border:2px solid #fff;padding:14px 32px;font-family:'Anton',sans-serif;font-size:15px;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;transition:background 0.2s,color 0.2s;}
+    .btn-next:hover{background:#000;color:#fff;}
 
-    /* Train results grid */
-    .train-grid { grid-template-columns:1fr 2fr 1fr 1fr 1fr 120px; }
 
-    .badge {
-      display:inline-block;
-      border:1px solid #fff;
-      padding:4px 10px;
-      font-size:11px;
-      letter-spacing:0.1em;
-      text-transform:uppercase;
-    }
-    .badge.green { border-color:#fff; color:#fff; }
-    .badge.red { border-color:rgba(255,255,255,0.3); color:rgba(255,255,255,0.3); }
+    .review-block{border:2px solid rgba(255,255,255,0.15);padding:28px 32px;margin-bottom:20px;}
+    .review-block h3{font-size:13px;letter-spacing:0.24em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,0.08);}
+    .review-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);}
+    .review-row:last-child{border-bottom:none;}
+    .review-key{font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.4);}
+    .review-val{font-size:15px;letter-spacing:0.05em;text-transform:uppercase;text-align:right;}
 
-    .book-row-btn {
-      background:#fff; color:#000;
-      border:none;
-      padding:8px 16px;
-      font-family:'Anton',sans-serif;
-      font-size:12px;
-      letter-spacing:0.1em;
-      text-transform:uppercase;
-      cursor:pointer;
-      transition:background 0.2s,color 0.2s;
-    }
-    .book-row-btn:hover { background:#000; color:#fff; border:1px solid #fff; }
+    .payment-box{border:2px solid #fff;padding:28px 32px;margin-bottom:20px;}
+    .payment-box h3{font-size:13px;letter-spacing:0.24em;text-transform:uppercase;margin-bottom:18px;}
+    .payment-line{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.08);font-size:14px;letter-spacing:0.08em;}
+    .payment-line.total{font-size:20px;border-bottom:none;margin-top:8px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.2);}
 
-    /* ═══ FARE CALCULATOR ═══ */
-    .fare-box {
-      border:2px solid #fff;
-      padding:32px 36px;
-      margin-top:28px;
-      display:flex;
-      gap:60px;
-      align-items:center;
-    }
-    .fare-item { display:flex; flex-direction:column; gap:6px; }
-    .fare-label { font-size:11px; letter-spacing:0.25em; text-transform:uppercase; color:rgba(255,255,255,0.4); }
-    .fare-value { font-size:36px; letter-spacing:0.04em; color:#fff; }
-    .fare-value.muted { color:rgba(255,255,255,0.25); }
-    .fare-divider { width:1px; height:52px; background:rgba(255,255,255,0.15); }
+    .declaration-row{display:flex;align-items:flex-start;gap:16px;margin-bottom:20px;}
+    .declaration-row input[type="checkbox"]{width:20px;height:20px;min-width:20px;accent-color:#fff;cursor:pointer;margin-top:3px;}
+    .declaration-row label{font-size:13px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.5);line-height:1.7;cursor:pointer;}
 
-    /* ═══ STATUS BOARD ═══ */
-    .status-board { border:2px solid #fff; }
-    .status-board-header {
-      background:#fff; color:#000;
-      display:grid;
-      grid-template-columns:120px 2fr 1fr 1fr 1fr 1fr;
-      padding:14px 20px;
-      font-size:11px;
-      letter-spacing:0.2em;
-      text-transform:uppercase;
-      gap:10px;
-    }
-    .status-row {
-      display:grid;
-      grid-template-columns:120px 2fr 1fr 1fr 1fr 1fr;
-      padding:18px 20px;
-      border-top:1px solid rgba(255,255,255,0.1);
-      font-size:14px;
-      letter-spacing:0.04em;
-      gap:10px;
-      align-items:center;
-    }
-    .status-on-time { color:#fff; font-size:12px; letter-spacing:0.1em; }
-    .status-delayed { color:rgba(255,255,255,0.4); font-size:12px; letter-spacing:0.1em; }
-    .status-cancelled { color:rgba(255,255,255,0.2); font-size:12px; letter-spacing:0.1em; text-decoration:line-through; }
+    .success-box{border:2px solid #fff;padding:40px;text-align:center;margin-top:24px;}
+    .success-box .s-icon{font-size:36px;margin-bottom:16px;}
+    .success-box .s-title{font-size:28px;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:10px;}
+    .success-box .s-ref{font-size:36px;letter-spacing:0.2em;margin-bottom:16px;}
+    .success-box .s-note{font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.4);line-height:2;}
 
-    /* ═══ BOOKING MODAL ═══ */
-    .modal-backdrop {
-      display:none;
-      position:fixed; inset:0;
-      background:rgba(0,0,0,0.88);
-      z-index:2000;
-      align-items:center;
-      justify-content:center;
-    }
-    .modal-backdrop.open { display:flex; }
-    .modal {
-      background:#000;
-      border:2px solid #fff;
-      padding:48px 52px;
-      width:560px;
-      max-width:95vw;
-      position:relative;
-    }
-    .modal h2 { font-size:28px; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:28px; }
-    .modal-close {
-      position:absolute; top:18px; right:22px;
-      background:none; border:none; color:#fff;
-      font-family:'Anton',sans-serif; font-size:13px;
-      letter-spacing:0.14em; text-transform:uppercase;
-      cursor:pointer; opacity:0.5;
-      transition:opacity 0.2s;
-    }
-    .modal-close:hover { opacity:1; }
-    .modal .field-row { margin-bottom:16px; }
-    .modal-confirm {
-      background:#fff; color:#000;
-      border:2px solid #fff;
-      padding:16px 32px;
-      font-family:'Anton',sans-serif;
-      font-size:16px; letter-spacing:0.14em;
-      text-transform:uppercase; cursor:pointer;
-      width:100%; margin-top:8px;
-      transition:background 0.2s, color 0.2s;
-    }
-    .modal-confirm:hover { background:#000; color:#fff; }
 
-    /* Confirmation box */
-    .confirm-box {
-      display:none;
-      border:2px solid #fff;
-      padding:32px 36px;
-      margin-top:28px;
-      text-align:center;
-    }
-    .confirm-box.show { display:block; }
-    .confirm-box .conf-title { font-size:22px; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:12px; }
-    .confirm-box .conf-ref { font-size:32px; letter-spacing:0.2em; color:#fff; margin-bottom:20px; }
-    .confirm-box .conf-detail { font-size:13px; letter-spacing:0.12em; text-transform:uppercase; color:rgba(255,255,255,0.5); line-height:2.2; }
+    .status-section-title{font-family:'Anton',sans-serif;font-size:16px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:16px;margin-top:36px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;gap:12px;}
+    .status-section-title:first-of-type{margin-top:0;}
+    .status-board{border:2px solid #fff;margin-bottom:8px;}
+    .status-board-header{background:#fff;color:#000;display:grid;grid-template-columns:100px 2.5fr 90px 80px 90px 120px;padding:13px 20px;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;gap:8px;}
+    .status-row{display:grid;grid-template-columns:100px 2.5fr 90px 80px 90px 120px;padding:16px 20px;border-top:1px solid rgba(255,255,255,0.08);font-size:14px;letter-spacing:0.04em;gap:8px;align-items:center;}
+    .s-on{font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#fff;}
+    .s-delay{font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.45);}
+    .s-cancel{font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.2);text-decoration:line-through;}
+    .status-note{margin-top:14px;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.25);}
 
-    /* empty state */
-    .empty-state {
-      padding:52px 20px;
-      text-align:center;
-      font-size:13px;
-      letter-spacing:0.2em;
-      text-transform:uppercase;
-      color:rgba(255,255,255,0.25);
-      border:2px solid rgba(255,255,255,0.08);
-      margin-top:28px;
-    }
+
+    .modal-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:2000;align-items:center;justify-content:center;}
+    .modal-backdrop.open{display:flex;}
+    .modal{background:#000;border:2px solid #fff;padding:44px 48px;width:540px;max-width:95vw;position:relative;}
+    .modal h2{font-size:24px;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:24px;}
+    .modal-close{position:absolute;top:18px;right:22px;background:none;border:none;color:#fff;font-family:'Anton',sans-serif;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;opacity:0.5;}
+    .modal-close:hover{opacity:1;}
+    .modal .field-full{margin-bottom:14px;}
+    .modal-confirm{background:#fff;color:#000;border:2px solid #fff;padding:15px 32px;font-family:'Anton',sans-serif;font-size:15px;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;width:100%;margin-top:8px;transition:background 0.2s,color 0.2s;}
+    .modal-confirm:hover{background:#000;color:#fff;}
+    .confirm-box{display:none;border:2px solid #fff;padding:28px;margin-top:20px;text-align:center;}
+    .confirm-box.show{display:block;}
+    .conf-title{font-size:18px;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:10px;}
+    .conf-ref{font-size:28px;letter-spacing:0.2em;margin-bottom:12px;}
+    .conf-detail{font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.4);line-height:2.2;}
 
     @media(max-width:900px){
-      nav { gap:16px; padding:14px 20px; }
-      nav a { font-size:12px; }
-      .hero { padding:32px 20px 28px; flex-direction:column; gap:16px; }
-      .hero-sub { text-align:left; }
-      .panel { padding:32px 20px; }
-      .field-row, .field-row-3, .field-row-4 { grid-template-columns:1fr; }
-      .tabs { grid-template-columns:1fr 1fr; }
-      .tab-btn:nth-child(2) { border-right:none; }
-      .tab-btn:nth-child(3) { border-top:1px solid #fff; }
-      .tab-btn:nth-child(4) { border-top:1px solid #fff; border-right:none; }
-      .status-board-header, .status-row { grid-template-columns:1fr 2fr 1fr; }
-      .status-board-header span:nth-child(n+4),
-      .status-row span:nth-child(n+4) { display:none; }
-      .bus-grid, .train-grid { grid-template-columns:1fr 2fr 1fr 100px; }
-      .results-header span:nth-child(4),
-      .results-header span:nth-child(5),
-      .result-row span:nth-child(4),
-      .result-row span:nth-child(5) { display:none; }
-      .fare-box { flex-wrap:wrap; gap:24px; }
+      nav{gap:14px;padding:14px 20px;}
+      nav a{font-size:12px;}
+      .hero{padding:28px 20px;flex-direction:column;gap:14px;}
+      .hero-sub{text-align:left;}
+      .panel{padding:28px 20px;}
+      .field-row,.field-row-3,.field-row-4{grid-template-columns:1fr;}
+      .tabs{grid-template-columns:1fr 1fr;}
+      .tab-btn:nth-child(2){border-right:none;}
+      .tab-btn:nth-child(3){border-top:1px solid #fff;}
+      .tab-btn:nth-child(4){border-top:1px solid #fff;border-right:none;}
+      .bus-grid,.train-grid{grid-template-columns:60px 1fr 80px 90px;}
+      .bus-grid span:nth-child(4),.bus-grid span:nth-child(5),
+      .train-grid span:nth-child(4),.train-grid span:nth-child(5){display:none;}
+      .status-board-header,.status-row{grid-template-columns:80px 2fr 80px 100px;}
+      .status-board-header span:nth-child(4),.status-board-header span:nth-child(5),
+      .status-row span:nth-child(4),.status-row span:nth-child(5){display:none;}
+      .progress-step{font-size:10px;padding:12px 4px;}
     }
   </style>
 </head>
 <body>
 
-<!-- NAV -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <nav>
   <a href="index.html">Home</a>
   <a href="public-transportation-tickets.html" class="active">Public-Transportation-Tickets</a>
@@ -326,294 +194,358 @@
 
 <div class="page">
 
-  <!-- HERO -->
+
   <div class="hero">
-    <h1>Public<br>Transport.</h1>
-    <div class="hero-sub">
-      Tiruchirappalli<br>
-      Bus · Train · Suburban<br>
-      Book · Track · Go
-    </div>
+    <h1>Connecting our city<br>One stop at a time.</h1>
+    <div class="hero-sub">Tiruchirappalli<br>Bus · Train<br>Book · Track · Go</div>
   </div>
 
-  <!-- TABS -->
+
   <div class="tabs">
     <button class="tab-btn active" onclick="switchTab('bus')">🚌 Bus Routes</button>
-    <button class="tab-btn" onclick="switchTab('train')">🚂 Suburban Trains</button>
-    <button class="tab-btn" onclick="switchTab('fare')">🎟️ Fare Calculator</button>
+    <button class="tab-btn" onclick="switchTab('train')">🚂 Trains</button>
+    <button class="tab-btn" onclick="switchTab('pass')">🎫 Bus Pass</button>
     <button class="tab-btn" onclick="switchTab('status')">📡 Live Status</button>
   </div>
-
-  <!-- ══════════════════════════════════
-       TAB 1 — BUS ROUTES
-  ══════════════════════════════════ -->
   <div class="panel active" id="panel-bus">
     <div class="panel-title">Bus Routes &amp; Schedules</div>
-
     <div class="s-label">Search Buses</div>
-    <div class="field-row">
-      <select id="bus-from">
-        <option value="">FROM — Select Stop</option>
-        <option>Trichy Central Bus Stand</option>
-        <option>Chatram Bus Stand</option>
-        <option>Srirangam Bus Stand</option>
-        <option>Thillai Nagar Bus Stop</option>
-        <option>BHEL Township Stop</option>
-        <option>Airport</option>
-        <option>Ariyamangalam</option>
-        <option>Puthur</option>
-        <option>KK Nagar</option>
-        <option>Woraiyur</option>
-      </select>
-      <select id="bus-to">
-        <option value="">TO — Select Stop</option>
-        <option>Trichy Central Bus Stand</option>
-        <option>Chatram Bus Stand</option>
-        <option>Srirangam Bus Stand</option>
-        <option>Thillai Nagar Bus Stop</option>
-        <option>BHEL Township Stop</option>
-        <option>Airport</option>
-        <option>Ariyamangalam</option>
-        <option>Puthur</option>
-        <option>KK Nagar</option>
-        <option>Woraiyur</option>
-      </select>
-    </div>
     <div class="field-row-3">
-      <select id="bus-type">
-        <option value="">BUS TYPE — ALL</option>
-        <option>Ordinary</option>
-        <option>Express</option>
-        <option>Town Bus</option>
-        <option>Mini Bus</option>
+      <select id="bus-from"><option value="">FROM — Select Stop</option>
+        <option>Trichy Central Bus Stand</option><option>Chatram Bus Stand</option>
+        <option>Srirangam Bus Stand</option><option>Thillai Nagar Bus Stop</option>
+        <option>BHEL Township Stop</option><option>Airport</option>
+        <option>Ariyamangalam</option><option>Puthur</option>
+        <option>KK Nagar</option><option>Woraiyur</option>
+        <option>Palakkarai</option><option>Melapudur</option>
       </select>
-      <input type="date" id="bus-date"/>
+      <select id="bus-to"><option value="">TO — Select Stop</option>
+        <option>Trichy Central Bus Stand</option><option>Chatram Bus Stand</option>
+        <option>Srirangam Bus Stand</option><option>Thillai Nagar Bus Stop</option>
+        <option>BHEL Township Stop</option><option>Airport</option>
+        <option>Ariyamangalam</option><option>Puthur</option>
+        <option>KK Nagar</option><option>Woraiyur</option>
+        <option>Palakkarai</option><option>Melapudur</option>
+      </select>
       <select id="bus-passengers">
-        <option>1 Passenger</option>
-        <option>2 Passengers</option>
-        <option>3 Passengers</option>
-        <option>4 Passengers</option>
-        <option>5 Passengers</option>
+        <option value="1">1 Passenger</option><option value="2">2 Passengers</option>
+        <option value="3">3 Passengers</option><option value="4">4 Passengers</option>
       </select>
     </div>
     <button class="action-btn" onclick="searchBuses()">Search Buses</button>
-
     <div id="bus-results"></div>
   </div>
-
-  <!-- ══════════════════════════════════
-       TAB 2 — SUBURBAN TRAINS
-  ══════════════════════════════════ -->
   <div class="panel" id="panel-train">
-    <div class="panel-title">Suburban Trains</div>
-
+    <div class="panel-title">Train Routes &amp; Schedules</div>
     <div class="s-label">Search Trains</div>
     <div class="field-row">
-      <select id="train-from">
-        <option value="">FROM — Select Station</option>
-        <option>Trichy Junction (TPJ)</option>
-        <option>Srirangam</option>
-        <option>Golden Rock</option>
-        <option>Lalgudi</option>
-        <option>Ariyalur</option>
-        <option>Vriddhachalam</option>
-        <option>Kumbakonam</option>
-        <option>Thanjavur</option>
-        <option>Karur</option>
-        <option>Dindigul</option>
+      <select id="train-from"><option value="">FROM — Select Station</option>
+        <option>Trichy Junction (TPJ)</option><option>Srirangam</option>
+        <option>Golden Rock</option><option>Lalgudi</option>
+        <option>Chennai Egmore</option><option>Chennai Central</option>
+        <option>Madurai Junction</option><option>Coimbatore Junction</option>
+        <option>Erode Junction</option><option>Salem Junction</option>
+        <option>Thanjavur Junction</option><option>Kumbakonam</option>
+        <option>Dindigul Junction</option><option>Karur Junction</option>
+        <option>Villupuram Junction</option><option>Tirunelveli Junction</option>
+        <option>Tuticorin</option><option>Nagercoil Junction</option>
+        <option>Bangalore City (SBC)</option><option>Mysore Junction</option>
+        <option>Hyderabad Deccan</option><option>Mumbai CST</option>
+        <option>New Delhi</option><option>Kolkata Howrah</option>
       </select>
-      <select id="train-to">
-        <option value="">TO — Select Station</option>
-        <option>Trichy Junction (TPJ)</option>
-        <option>Srirangam</option>
-        <option>Golden Rock</option>
-        <option>Lalgudi</option>
-        <option>Ariyalur</option>
-        <option>Vriddhachalam</option>
-        <option>Kumbakonam</option>
-        <option>Thanjavur</option>
-        <option>Karur</option>
-        <option>Dindigul</option>
+      <select id="train-to"><option value="">TO — Select Station</option>
+        <option>Trichy Junction (TPJ)</option><option>Srirangam</option>
+        <option>Golden Rock</option><option>Lalgudi</option>
+        <option>Chennai Egmore</option><option>Chennai Central</option>
+        <option>Madurai Junction</option><option>Coimbatore Junction</option>
+        <option>Erode Junction</option><option>Salem Junction</option>
+        <option>Thanjavur Junction</option><option>Kumbakonam</option>
+        <option>Dindigul Junction</option><option>Karur Junction</option>
+        <option>Villupuram Junction</option><option>Tirunelveli Junction</option>
+        <option>Tuticorin</option><option>Nagercoil Junction</option>
+        <option>Bangalore City (SBC)</option><option>Mysore Junction</option>
+        <option>Hyderabad Deccan</option><option>Mumbai CST</option>
+        <option>New Delhi</option><option>Kolkata Howrah</option>
       </select>
+
     </div>
     <div class="field-row-4">
       <input type="date" id="train-date"/>
-      <select id="train-class">
-        <option>General (2nd Class)</option>
-        <option>Sleeper (SL)</option>
-        <option>AC 3 Tier (3A)</option>
-        <option>AC 2 Tier (2A)</option>
-        <option>AC First (1A)</option>
+      <select id="train-class"><option value="">CLASS</option>
+        <option value="2S">General / 2S</option><option value="SL">Sleeper (SL)</option>
+        <option value="3A">AC 3 Tier (3A)</option><option value="2A">AC 2 Tier (2A)</option>
+        <option value="1A">AC First (1A)</option>
       </select>
-      <select id="train-quota">
-        <option>General Quota</option>
-        <option>Ladies Quota</option>
-        <option>Senior Citizen</option>
-        <option>Tatkal</option>
+      <select id="train-quota"><option value="">QUOTA</option>
+        <option>General Quota</option><option>Ladies Quota</option>
+        <option>Senior Citizen</option><option>Tatkal</option>
       </select>
       <select id="train-passengers">
-        <option>1 Passenger</option>
-        <option>2 Passengers</option>
-        <option>3 Passengers</option>
-        <option>4 Passengers</option>
-        <option>5 Passengers</option>
+        <option value="1">1 Passenger</option><option value="2">2 Passengers</option>
+        <option value="3">3 Passengers</option><option value="4">4 Passengers</option>
       </select>
     </div>
     <button class="action-btn" onclick="searchTrains()">Search Trains</button>
-
     <div id="train-results"></div>
   </div>
 
-  <!-- ══════════════════════════════════
-       TAB 3 — FARE CALCULATOR
-  ══════════════════════════════════ -->
-  <div class="panel" id="panel-fare">
-    <div class="panel-title">Fare Calculator</div>
+  <div class="panel" id="panel-pass">
+    <div class="panel-title">Bus Pass Application</div>
 
-    <div class="s-label">Select Journey Details</div>
-    <div class="field-row">
-      <select id="fare-mode" onchange="calcFare()">
-        <option value="">MODE — Select</option>
-        <option value="ordinary">Ordinary Bus</option>
-        <option value="express">Express Bus</option>
-        <option value="town">Town Bus</option>
-        <option value="general">Train — General</option>
-        <option value="sleeper">Train — Sleeper</option>
-        <option value="ac3">Train — AC 3 Tier</option>
-        <option value="ac2">Train — AC 2 Tier</option>
-      </select>
-      <select id="fare-from" onchange="calcFare()">
-        <option value="">FROM — Stop / Station</option>
-        <option value="central_bus">Trichy Central Bus Stand</option>
-        <option value="chatram">Chatram Bus Stand</option>
-        <option value="srirangam_bus">Srirangam Bus Stand</option>
-        <option value="thillai">Thillai Nagar</option>
-        <option value="bhel">BHEL Township</option>
-        <option value="airport">Airport</option>
-        <option value="trichy_jn">Trichy Junction (TPJ)</option>
-        <option value="srirangam_rly">Srirangam Rly Stn</option>
-        <option value="golden_rock">Golden Rock</option>
-        <option value="lalgudi">Lalgudi</option>
-        <option value="kumbakonam">Kumbakonam</option>
-        <option value="thanjavur">Thanjavur</option>
-      </select>
-    </div>
-    <div class="field-row">
-      <select id="fare-to" onchange="calcFare()">
-        <option value="">TO — Stop / Station</option>
-        <option value="central_bus">Trichy Central Bus Stand</option>
-        <option value="chatram">Chatram Bus Stand</option>
-        <option value="srirangam_bus">Srirangam Bus Stand</option>
-        <option value="thillai">Thillai Nagar</option>
-        <option value="bhel">BHEL Township</option>
-        <option value="airport">Airport</option>
-        <option value="trichy_jn">Trichy Junction (TPJ)</option>
-        <option value="srirangam_rly">Srirangam Rly Stn</option>
-        <option value="golden_rock">Golden Rock</option>
-        <option value="lalgudi">Lalgudi</option>
-        <option value="kumbakonam">Kumbakonam</option>
-        <option value="thanjavur">Thanjavur</option>
-      </select>
-      <select id="fare-pax" onchange="calcFare()">
-        <option value="1">1 Passenger</option>
-        <option value="2">2 Passengers</option>
-        <option value="3">3 Passengers</option>
-        <option value="4">4 Passengers</option>
-        <option value="5">5 Passengers</option>
-      </select>
+    <div class="progress-bar">
+      <div class="progress-step active" id="ps-1">1 · Personal</div>
+      <div class="progress-step" id="ps-2">2 · Address</div>
+      <div class="progress-step" id="ps-3">3 · Pass Details</div>
+      <div class="progress-step" id="ps-4">4 · Review</div>
     </div>
 
-    <div class="fare-box">
-      <div class="fare-item">
-        <span class="fare-label">Distance</span>
-        <span class="fare-value muted" id="fare-dist">— KM</span>
+
+    <div class="pass-step active" id="step-1">
+      <div class="step-title">Personal Information</div>
+      <div class="field-row">
+        <div>
+          <select id="p-gender" style="width:100%"><option value="">GENDER — Select</option><option>Male</option><option>Female</option></select>
+          <div class="err-msg" id="e-gender">Please select gender</div>
+        </div>
+        <div>
+          <input type="date" id="p-dob" placeholder="DATE OF BIRTH"/>
+          <div class="err-msg" id="e-dob">Please enter a valid past date</div>
+        </div>
       </div>
-      <div class="fare-divider"></div>
-      <div class="fare-item">
-        <span class="fare-label">Base Fare</span>
-        <span class="fare-value muted" id="fare-base">₹—</span>
+      <div class="field-row">
+        <div>
+          <input type="text" id="p-name" placeholder="FULL NAME"/>
+          <div class="err-msg" id="e-name">Letters and spaces only</div>
+        </div>
+        <div>
+          <input type="tel" id="p-mobile" placeholder="MOBILE NUMBER (10 DIGITS)" maxlength="10"/>
+          <div class="err-msg" id="e-mobile">Must be exactly 10 digits</div>
+        </div>
       </div>
-      <div class="fare-divider"></div>
-      <div class="fare-item">
-        <span class="fare-label">Total Fare</span>
-        <span class="fare-value muted" id="fare-total">₹—</span>
+      <div class="field-row">
+        <div>
+          <input type="email" id="p-email" placeholder="EMAIL (OPTIONAL)"/>
+          <div class="err-msg" id="e-email">Enter a valid email format</div>
+        </div>
+        <div>
+          <input type="text" id="p-aadhaar" placeholder="AADHAAR NUMBER (12 DIGITS)" maxlength="12"/>
+          <div class="err-msg" id="e-aadhaar">Must be exactly 12 digits</div>
+        </div>
+      </div>
+      <div class="field-full">
+        <div class="s-label">Passport Size Photo (JPG/PNG, Max 500KB)</div>
+        <input type="file" id="p-photo" accept=".jpg,.jpeg,.png"/>
+        <div class="err-msg" id="e-photo">Required. JPG/PNG only, max 500KB</div>
+      </div>
+      <div class="pass-nav"><button class="btn-next" onclick="nextStep(1)">Next →</button></div>
+    </div>
+
+
+    <div class="pass-step" id="step-2">
+      <div class="step-title">Residential Address</div>
+      <div class="field-full">
+        <input type="text" id="p-addr1" placeholder="ADDRESS LINE 1 (REQUIRED)" style="width:100%"/>
+        <div class="err-msg" id="e-addr1">This field is required</div>
+      </div>
+      <div class="field-full">
+        <input type="text" id="p-addr2" placeholder="ADDRESS LINE 2 (OPTIONAL)" style="width:100%"/>
+      </div>
+      <div class="field-row">
+        <div>
+          <input type="text" id="p-city" placeholder="CITY (REQUIRED)"/>
+          <div class="err-msg" id="e-city">This field is required</div>
+        </div>
+        <div>
+          <input type="text" id="p-pin" placeholder="PIN CODE (6 DIGITS)" maxlength="6"/>
+          <div class="err-msg" id="e-pin">Must be exactly 6 digits</div>
+        </div>
+      </div>
+      <div class="pass-nav">
+        <button class="btn-back" onclick="prevStep(2)">← Back</button>
+        <button class="btn-next" onclick="nextStep(2)">Next →</button>
+      </div>
+    </div>
+
+
+    <div class="pass-step" id="step-3">
+      <div class="step-title">Pass Details</div>
+      <div class="field-row">
+        <div>
+          <select id="p-passtype">
+            <option value="">PASS TYPE — Select</option>
+            <option value="Student">Student Pass</option>
+            <option value="Monthly">Monthly Pass</option>
+            <option value="Quarterly">Quarterly Pass</option>
+            <option value="Senior Citizen">Senior Citizen Pass</option>
+            <option value="Differently Abled">Differently Abled Pass</option>
+          </select>
+          <div class="err-msg" id="e-passtype">Please select a pass type</div>
+        </div>
+        <div>
+          <select id="p-route">
+            <option value="">ROUTE COVERAGE — Select</option>
+            <option value="Zone A (City Core)">Zone A — City Core</option>
+            <option value="Zone B (Extended)">Zone B — Extended City</option>
+            <option value="Zone C (Outskirts)">Zone C — Outskirts</option>
+            <option value="All Zones">All Zones (Unlimited)</option>
+          </select>
+          <div class="err-msg" id="e-route">Please select route coverage</div>
+        </div>
+      </div>
+      <div class="field-row">
+        <div>
+          <select id="p-validity">
+            <option value="">VALIDITY PERIOD — Select</option>
+            <option value="1 Month">1 Month</option>
+            <option value="3 Months">3 Months</option>
+            <option value="6 Months">6 Months</option>
+            <option value="1 Year">1 Year</option>
+          </select>
+          <div class="err-msg" id="e-validity">Please select validity</div>
+        </div>
+        <div>
+          <input type="date" id="p-startdate"/>
+          <div class="err-msg" id="e-startdate">Start date cannot be in the past</div>
+        </div>
+      </div>
+      <div class="pass-nav">
+        <button class="btn-back" onclick="prevStep(3)">← Back</button>
+        <button class="btn-next" onclick="nextStep(3)">Review →</button>
+      </div>
+    </div>
+
+
+    <div class="pass-step" id="step-4">
+      <div class="step-title">Review &amp; Submit</div>
+
+      <div class="review-block">
+        <h3>Personal Information</h3>
+        <div class="review-row"><span class="review-key">Full Name</span><span class="review-val" id="r-name">—</span></div>
+        <div class="review-row"><span class="review-key">Date of Birth</span><span class="review-val" id="r-dob">—</span></div>
+        <div class="review-row"><span class="review-key">Gender</span><span class="review-val" id="r-gender">—</span></div>
+        <div class="review-row"><span class="review-key">Mobile</span><span class="review-val" id="r-mobile">—</span></div>
+        <div class="review-row"><span class="review-key">Email</span><span class="review-val" id="r-email">—</span></div>
+        <div class="review-row"><span class="review-key">Aadhaar</span><span class="review-val" id="r-aadhaar">—</span></div>
+        <div class="review-row"><span class="review-key">Photo</span><span class="review-val" id="r-photo">—</span></div>
+      </div>
+
+      <div class="review-block">
+        <h3>Residential Address</h3>
+        <div class="review-row"><span class="review-key">Address</span><span class="review-val" id="r-addr">—</span></div>
+        <div class="review-row"><span class="review-key">City</span><span class="review-val" id="r-city">—</span></div>
+        <div class="review-row"><span class="review-key">PIN Code</span><span class="review-val" id="r-pin">—</span></div>
+      </div>
+
+      <div class="review-block">
+        <h3>Pass Details</h3>
+        <div class="review-row"><span class="review-key">Pass Type</span><span class="review-val" id="r-passtype">—</span></div>
+        <div class="review-row"><span class="review-key">Route Coverage</span><span class="review-val" id="r-route">—</span></div>
+        <div class="review-row"><span class="review-key">Validity</span><span class="review-val" id="r-validity">—</span></div>
+        <div class="review-row"><span class="review-key">Start Date</span><span class="review-val" id="r-startdate">—</span></div>
+      </div>
+
+      <div class="payment-box">
+        <h3>Payment Summary</h3>
+        <div class="payment-line"><span>Pass Type</span><span id="pay-type">—</span></div>
+        <div class="payment-line"><span>Route Zone</span><span id="pay-zone">—</span></div>
+        <div class="payment-line"><span>Validity</span><span id="pay-validity">—</span></div>
+        <div class="payment-line"><span>Base Fare</span><span id="pay-base">₹—</span></div>
+        <div class="payment-line"><span>Processing Fee</span><span>₹25</span></div>
+        <div class="payment-line total"><span>Total Payable</span><span id="pay-total">₹—</span></div>
+      </div>
+
+      <div class="declaration-row">
+        <input type="checkbox" id="p-declare"/>
+        <label for="p-declare">I hereby declare that all the information provided is true and correct to the best of my knowledge. I understand that providing false information may result in cancellation of the pass.</label>
+      </div>
+      <div class="err-msg" id="e-declare" style="margin-bottom:16px;">Please accept the declaration to proceed</div>
+
+      <div class="pass-nav">
+        <button class="btn-back" onclick="prevStep(4)">← Back</button>
+        <button class="btn-next" onclick="submitPass()">Submit &amp; Pay</button>
+      </div>
+
+      <div class="success-box" id="pass-success" style="display:none;">
+        <div class="s-icon">✓</div>
+        <div class="s-title">Application Submitted</div>
+        <div class="s-ref" id="pass-ref">TRY-BP-000000</div>
+        <div class="s-note">Your bus pass application has been received.<br>SMS confirmation sent to your mobile.<br>Pass will be dispatched within 5–7 working days.</div>
       </div>
     </div>
   </div>
 
-  <!-- ══════════════════════════════════
-       TAB 4 — LIVE STATUS
-  ══════════════════════════════════ -->
   <div class="panel" id="panel-status">
     <div class="panel-title">Live Status Board</div>
 
-    <div class="s-label">Current Departures — Trichy Central &amp; TPJ</div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="status-section-title">🚌 Bus Departures — Trichy Central &amp; Chatram</div>
     <div class="status-board">
-      <div class="status-board-header">
-        <span>No.</span>
-        <span>Route / Train</span>
-        <span>Departs</span>
-        <span>Platform</span>
-        <span>ETA</span>
-        <span>Status</span>
-      </div>
-
-      <!-- Bus rows -->
-      <div class="status-row"><span>1A</span><span>Central → Srirangam</span><span>06:15</span><span>Bay 3</span><span>06:55</span><span class="status-on-time">ON TIME</span></div>
-      <div class="status-row"><span>7C</span><span>Central → BHEL</span><span>06:30</span><span>Bay 7</span><span>07:20</span><span class="status-delayed">DELAYED +12</span></div>
-      <div class="status-row"><span>15E</span><span>Chatram → Airport</span><span>06:45</span><span>Bay 1</span><span>07:15</span><span class="status-on-time">ON TIME</span></div>
-      <div class="status-row"><span>22</span><span>Central → Thillai Nagar</span><span>07:00</span><span>Bay 5</span><span>07:35</span><span class="status-on-time">ON TIME</span></div>
-      <div class="status-row"><span>TPJ EXP</span><span>Trichy → Kumbakonam</span><span>07:10</span><span>PF 2</span><span>08:55</span><span class="status-on-time">ON TIME</span></div>
-      <div class="status-row"><span>6135</span><span>Trichy → Chennai Egmore</span><span>07:25</span><span>PF 1</span><span>13:10</span><span class="status-delayed">DELAYED +8</span></div>
-      <div class="status-row"><span>3B</span><span>Central → KK Nagar</span><span>07:30</span><span>Bay 9</span><span>08:00</span><span class="status-on-time">ON TIME</span></div>
-      <div class="status-row"><span>6232</span><span>Trichy → Madurai</span><span>07:40</span><span>PF 3</span><span>09:30</span><span class="status-cancelled">CANCELLED</span></div>
-      <div class="status-row"><span>9X</span><span>Chatram → Woraiyur</span><span>07:45</span><span>Bay 2</span><span>08:10</span><span class="status-on-time">ON TIME</span></div>
-      <div class="status-row"><span>SUB-1</span><span>TPJ → Golden Rock Local</span><span>08:00</span><span>PF 4</span><span>08:22</span><span class="status-on-time">ON TIME</span></div>
-      <div class="status-row"><span>44</span><span>Central → Puthur</span><span>08:05</span><span>Bay 6</span><span>08:40</span><span class="status-delayed">DELAYED +5</span></div>
-      <div class="status-row"><span>6040</span><span>Trichy → Coimbatore</span><span>08:15</span><span>PF 2</span><span>11:45</span><span class="status-on-time">ON TIME</span></div>
+      <div class="status-board-header"><span>Bus No.</span><span>Route</span><span>Departs</span><span>Platform</span><span>ETA</span><span>Status</span></div>
+      <div class="status-row"><span>1A</span><span>Central → Srirangam</span><span>06:15</span><span>Bay 3</span><span>06:55</span><span class="s-on">ON TIME</span></div>
+      <div class="status-row"><span>7C</span><span>Central → BHEL</span><span>06:30</span><span>Bay 7</span><span>07:22</span><span class="s-delay">DELAYED +12</span></div>
+      <div class="status-row"><span>15E</span><span>Chatram → Airport</span><span>06:45</span><span>Bay 1</span><span>07:15</span><span class="s-on">ON TIME</span></div>
+      <div class="status-row"><span>22</span><span>Central → Thillai Nagar</span><span>07:00</span><span>Bay 5</span><span>07:38</span><span class="s-on">ON TIME</span></div>
+      <div class="status-row"><span>3B</span><span>Central → KK Nagar</span><span>07:15</span><span>Bay 9</span><span>07:48</span><span class="s-on">ON TIME</span></div>
+      <div class="status-row"><span>9X</span><span>Chatram → Woraiyur</span><span>07:30</span><span>Bay 2</span><span>07:58</span><span class="s-on">ON TIME</span></div>
+      <div class="status-row"><span>33X</span><span>Central → Ariyamangalam</span><span>07:45</span><span>Bay 4</span><span>08:20</span><span class="s-on">ON TIME</span></div>
+      <div class="status-row"><span>44</span><span>Central → Puthur</span><span>08:00</span><span>Bay 6</span><span>08:42</span><span class="s-delay">DELAYED +7</span></div>
+      <div class="status-row"><span>52M</span><span>Chatram → Melapudur</span><span>08:10</span><span>Bay 8</span><span>08:45</span><span class="s-on">ON TIME</span></div>
+      <div class="status-row"><span>60E</span><span>Central → Palakkarai</span><span>08:20</span><span>Bay 3</span><span>08:50</span><span class="s-cancel">CANCELLED</span></div>
+      <div class="status-row"><span>12</span><span>Central → Srirangam (Express)</span><span>08:30</span><span>Bay 1</span><span>09:00</span><span class="s-on">ON TIME</span></div>
+      <div class="status-row"><span>77</span><span>Chatram → BHEL Township</span><span>08:45</span><span>Bay 6</span><span>09:35</span><span class="s-delay">DELAYED +5</span></div>
     </div>
 
-    <div style="margin-top:20px; font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:rgba(255,255,255,0.3);">
-      ↻ Status refreshes every 5 minutes &nbsp;·&nbsp; Last updated: just now
+    <div class="status-section-title">🚂 Train Departures — Trichy Junction (TPJ)</div>
+    <div class="status-board">
+      <div class="status-board-header"><span>Train No.</span><span>Name / Destination</span><span>Departs</span><span>Platform</span><span>ETA</span><span>Status</span></div>
+      <div class="status-row"><span>SUB-1</span><span>TPJ Local → Golden Rock</span><span>06:05</span><span>PF 4</span><span>06:27</span><span class="s-on">ON TIME</span></div>
+      <div class="status-row"><span>6135</span><span>Rockfort Exp → Chennai Egmore</span><span>07:25</span><span>PF 1</span><span>13:10</span><span class="s-on">ON TIME</span></div>
+      <div class="status-row"><span>6040</span><span>Cheran Exp → Coimbatore</span><span>08:15</span><span>PF 2</span><span>11:45</span><span class="s-delay">DELAYED +8</span></div>
+      <div class="status-row"><span>6232</span><span>Kaveri Exp → Chennai Egmore</span><span>09:40</span><span>PF 3</span><span>15:20</span><span class="s-cancel">CANCELLED</span></div>
+      <div class="status-row"><span>6043</span><span>Pallavan Exp → Chennai</span><span>11:00</span><span>PF 1</span><span>16:45</span><span class="s-on">ON TIME</span></div>
+      <div class="status-row"><span>12661</span><span>Intercity → Madurai</span><span>12:30</span><span>PF 2</span><span>15:10</span><span class="s-on">ON TIME</span></div>
+      <div class="status-row"><span>6175</span><span>Trichy Intercity → Bangalore</span><span>14:30</span><span>PF 3</span><span>21:55</span><span class="s-on">ON TIME</span></div>
+      <div class="status-row"><span>11043</span><span>Mumbai Exp → Mumbai CST</span><span>15:10</span><span>PF 1</span><span>+2 days</span><span class="s-delay">DELAYED +22</span></div>
+      <div class="status-row"><span>6188</span><span>Erode Passenger → Erode Jn</span><span>16:00</span><span>PF 4</span><span>19:30</span><span class="s-on">ON TIME</span></div>
+      <div class="status-row"><span>SUB-4</span><span>TPJ Local → Lalgudi</span><span>17:30</span><span>PF 4</span><span>18:10</span><span class="s-on">ON TIME</span></div>
+      <div class="status-row"><span>16724</span><span>Ananthapuri Exp → Trivandrum</span><span>18:45</span><span>PF 2</span><span>+1 day</span><span class="s-on">ON TIME</span></div>
+      <div class="status-row"><span>12696</span><span>Chennai Exp → Chennai Central</span><span>20:00</span><span>PF 1</span><span>01:30</span><span class="s-delay">DELAYED +15</span></div>
     </div>
+
+    <div class="status-note">↻ Status refreshes every 5 minutes &nbsp;·&nbsp; Last updated: just now &nbsp;·&nbsp; Source: Trichy Central Control</div>
   </div>
 
 </div><!-- /page -->
 
-<!-- ══════════════════════════════════
-     BOOKING MODAL
-══════════════════════════════════ -->
+
 <div class="modal-backdrop" id="modal">
   <div class="modal">
     <button class="modal-close" onclick="closeModal()">✕ Close</button>
     <h2 id="modal-title">Book Ticket</h2>
-    <div style="margin-bottom:24px; font-size:13px; letter-spacing:0.12em; text-transform:uppercase; color:rgba(255,255,255,0.45); line-height:2;" id="modal-info"></div>
-
-    <div class="s-label" style="margin-bottom:8px;">Passenger Name</div>
-    <div class="field-row" style="margin-bottom:16px;">
-      <input type="text" id="pax-name" placeholder="Full Name"/>
-    </div>
-
-    <div class="s-label" style="margin-bottom:8px;">Mobile Number</div>
-    <div class="field-row" style="margin-bottom:16px;">
-      <input type="text" id="pax-mobile" placeholder="10-Digit Mobile"/>
-    </div>
-
-    <div class="s-label" style="margin-bottom:8px;">Payment Method</div>
-    <div class="field-row" style="margin-bottom:24px;">
-      <select id="pax-payment">
-        <option>UPI / GPay</option>
-        <option>Debit Card</option>
-        <option>Credit Card</option>
-        <option>Net Banking</option>
-        <option>Cash at Counter</option>
+    <div style="margin-bottom:20px;font-size:13px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.4);line-height:2;" id="modal-info"></div>
+    <div class="field-full"><input type="text" id="pax-name" placeholder="FULL NAME" style="width:100%"/></div>
+    <div class="field-full"><input type="text" id="pax-mobile" placeholder="MOBILE NUMBER" style="width:100%"/></div>
+    <div class="field-full">
+      <select id="pax-payment" style="width:100%">
+        <option>UPI / GPay</option><option>Debit Card</option>
+        <option>Credit Card</option><option>Net Banking</option><option>Cash at Counter</option>
       </select>
     </div>
-
     <button class="modal-confirm" onclick="confirmBooking()">Confirm &amp; Pay</button>
-
-    <!-- Confirmation -->
     <div class="confirm-box" id="confirm-box">
       <div class="conf-title">✓ Booking Confirmed</div>
       <div class="conf-ref" id="conf-ref">TRY-000000</div>
@@ -623,183 +555,289 @@
 </div>
 
 <script>
-  /* ── Tab switching ── */
+
   function switchTab(tab) {
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
     document.querySelector(`[onclick="switchTab('${tab}')"]`).classList.add('active');
     document.getElementById(`panel-${tab}`).classList.add('active');
   }
 
-  /* ── Location coordinates for distance ── */
-  const STOPS = {
-    central_bus:   { name:"Trichy Central Bus Stand",  lat:10.8050, lng:78.6856 },
-    chatram:       { name:"Chatram Bus Stand",           lat:10.8231, lng:78.6917 },
-    srirangam_bus: { name:"Srirangam Bus Stand",         lat:10.8636, lng:78.6921 },
-    thillai:       { name:"Thillai Nagar",               lat:10.8189, lng:78.6985 },
-    bhel:          { name:"BHEL Township",               lat:10.9081, lng:78.7295 },
-    airport:       { name:"Airport",                     lat:10.7651, lng:78.7099 },
-    trichy_jn:     { name:"Trichy Junction (TPJ)",       lat:10.8161, lng:78.6844 },
-    srirangam_rly: { name:"Srirangam Rly Stn",           lat:10.8606, lng:78.7003 },
-    golden_rock:   { name:"Golden Rock",                 lat:10.8420, lng:78.7312 },
-    lalgudi:       { name:"Lalgudi",                     lat:10.8697, lng:78.8156 },
-    kumbakonam:    { name:"Kumbakonam",                  lat:10.9602, lng:79.3845 },
-    thanjavur:     { name:"Thanjavur",                   lat:10.7905, lng:79.1378 },
-  };
 
-  function haversine(lat1,lng1,lat2,lng2) {
-    const R=6371, d2r=Math.PI/180;
-    const dL=(lat2-lat1)*d2r, dG=(lng2-lng1)*d2r;
-    const a=Math.sin(dL/2)**2+Math.cos(lat1*d2r)*Math.cos(lat2*d2r)*Math.sin(dG/2)**2;
-    return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
-  }
-
-  /* ── Bus search ── */
-  const BUS_DATA = [
-    { no:'1A',  type:'Ordinary', dep:'06:15',arr:'06:55',dur:'40m',fare:12,seats:18 },
-    { no:'7C',  type:'Express',  dep:'06:30',arr:'07:10',dur:'40m',fare:18,seats:6  },
-    { no:'15E', type:'Town Bus', dep:'07:00',arr:'07:40',dur:'40m',fare:10,seats:24 },
-    { no:'22',  type:'Ordinary', dep:'07:30',arr:'08:10',dur:'40m',fare:12,seats:12 },
-    { no:'33X', type:'Express',  dep:'08:00',arr:'08:35',dur:'35m',fare:18,seats:3  },
-    { no:'44',  type:'Mini Bus', dep:'08:30',arr:'09:15',dur:'45m',fare:15,seats:20 },
+  const ALL_BUSES = [
+    {no:'1A', type:'Ordinary', dep:'06:15',arr:'06:55',dur:'40m',fare:12,seats:18},
+    {no:'7C', type:'Express',  dep:'06:30',arr:'07:10',dur:'40m',fare:18,seats:6},
+    {no:'15E',type:'Town Bus', dep:'07:00',arr:'07:40',dur:'40m',fare:10,seats:24},
+    {no:'22', type:'Ordinary', dep:'07:30',arr:'08:10',dur:'40m',fare:12,seats:12},
+    {no:'33X',type:'Express',  dep:'08:00',arr:'08:35',dur:'35m',fare:18,seats:3},
+    {no:'44', type:'Mini Bus', dep:'08:30',arr:'09:15',dur:'45m',fare:15,seats:20},
+    {no:'52M',type:'Town Bus', dep:'09:00',arr:'09:45',dur:'45m',fare:10,seats:16},
+    {no:'60E',type:'Express',  dep:'09:30',arr:'10:05',dur:'35m',fare:18,seats:9},
+    {no:'77', type:'Ordinary', dep:'10:00',arr:'10:45',dur:'45m',fare:12,seats:22},
+    {no:'88', type:'Mini Bus', dep:'10:30',arr:'11:10',dur:'40m',fare:15,seats:14},
   ];
 
   function searchBuses() {
     const from = document.getElementById('bus-from').value;
     const to   = document.getElementById('bus-to').value;
     const el   = document.getElementById('bus-results');
-    if (!from || !to) { el.innerHTML=`<div class="empty-state">Please select both From and To stops</div>`; return; }
-    if (from===to)    { el.innerHTML=`<div class="empty-state">From and To cannot be the same</div>`; return; }
-
-    let html = `<div class="results-wrap">
-      <div class="results-header bus-grid">
-        <span>Bus No.</span><span>Route</span><span>Departs</span><span>Arrives</span><span>Fare</span><span>Book</span>
-      </div>`;
-    BUS_DATA.forEach(b => {
-      html += `<div class="result-row bus-grid">
+    if (!from||!to){el.innerHTML=`<div class="empty-state">Please select both From and To stops</div>`;return;}
+    if (from===to){el.innerHTML=`<div class="empty-state">From and To cannot be the same</div>`;return;}
+    const filtered = ALL_BUSES;
+    if(!filtered.length){el.innerHTML=`<div class="empty-state">No buses found for selected type</div>`;return;}
+    let html=`<div class="results-wrap"><div class="results-header bus-grid"><span>Bus No.</span><span>Route</span><span>Departs</span><span>Arrives</span><span>Fare</span><span>Book</span></div>`;
+    filtered.forEach(b=>{
+      html+=`<div class="result-row bus-grid">
         <span><strong>${b.no}</strong></span>
-        <span>${from} → ${to}<br><span style="font-size:11px;opacity:0.4;letter-spacing:0.1em">${b.type} · ${b.dur}</span></span>
-        <span>${b.dep}</span>
-        <span>${b.arr}</span>
-        <span>₹${b.fare}<br><span style="font-size:11px;opacity:0.4">${b.seats} seats</span></span>
-        <span><button class="book-row-btn" onclick="openModal('BUS ${b.no}','${from}','${to}','${b.dep}','₹${b.fare}')">Book</button></span>
+        <span>${from} → ${to}<div class="row-sub">${b.type} · ${b.dur}</div></span>
+        <span>${b.dep}</span><span>${b.arr}</span>
+        <span>₹${b.fare}<div class="row-sub">${b.seats} seats</div></span>
+        <span><button class="book-row-btn" onclick="openModal('Bus ${b.no}','${from}','${to}','${b.dep}','₹${b.fare}')">Book</button></span>
       </div>`;
     });
-    html += `</div>`;
-    el.innerHTML = html;
+    el.innerHTML=html+`</div>`;
   }
 
-  /* ── Train search ── */
-  const TRAIN_DATA = [
-    { no:'6135', name:'Rockfort Express',    dep:'07:25',arr:'13:10',dur:'5h 45m',fare:145,avail:'Available' },
-    { no:'6040', name:'Cheran Express',      dep:'08:15',arr:'11:45',dur:'3h 30m',fare:210,avail:'Available' },
-    { no:'6232', name:'Kaveri Express',      dep:'09:40',arr:'12:50',dur:'3h 10m',fare:185,avail:'Waitlist 4' },
-    { no:'6043', name:'Pallavan Express',    dep:'11:00',arr:'15:30',dur:'4h 30m',fare:160,avail:'Available' },
-    { no:'6175', name:'Trichy Intercity',    dep:'14:30',arr:'19:20',dur:'4h 50m',fare:195,avail:'Available' },
-    { no:'SUB-1', name:'TPJ Local Suburban', dep:'08:00',arr:'08:22',dur:'22m',   fare:15, avail:'Available' },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  const ALL_TRAINS = [
+    {no:'6135', name:'Rockfort Express',    from:'Trichy Junction (TPJ)', to:'Chennai Egmore',       dep:'07:25',arr:'13:10',dur:'5h 45m',fare:{SL:145,'3A':380,'2A':545,'1A':920,'2S':85}, avail:'Available'},
+    {no:'6232', name:'Kaveri Express',      from:'Trichy Junction (TPJ)', to:'Chennai Egmore',       dep:'09:40',arr:'15:20',dur:'5h 40m',fare:{SL:155,'3A':400,'2A':570,'1A':960,'2S':90}, avail:'Waitlist 4'},
+    {no:'6043', name:'Pallavan Express',    from:'Trichy Junction (TPJ)', to:'Chennai Egmore',       dep:'11:00',arr:'16:45',dur:'5h 45m',fare:{SL:160,'3A':415,'2A':590,'1A':990,'2S':95}, avail:'Available'},
+    {no:'12696',name:'Chennai SF Express',  from:'Trichy Junction (TPJ)', to:'Chennai Central',      dep:'20:00',arr:'01:30',dur:'5h 30m',fare:{SL:140,'3A':360,'2A':510,'1A':860,'2S':82}, avail:'Waitlist 2'},
+    {no:'12661',name:'Trichy Madurai IC',   from:'Trichy Junction (TPJ)', to:'Madurai Junction',     dep:'12:30',arr:'15:10',dur:'2h 40m',fare:{SL:95, '3A':245,'2A':350,'1A':580,'2S':55}, avail:'Available'},
+    {no:'16724',name:'Ananthapuri Express', from:'Trichy Junction (TPJ)', to:'Madurai Junction',     dep:'18:45',arr:'21:20',dur:'2h 35m',fare:{SL:90, '3A':235,'2A':330,'1A':560,'2S':52}, avail:'Available'},
+    {no:'6040', name:'Cheran Express',      from:'Trichy Junction (TPJ)', to:'Coimbatore Junction',  dep:'08:15',arr:'11:45',dur:'3h 30m',fare:{SL:120,'3A':310,'2A':440,'1A':750,'2S':70}, avail:'Available'},
+    {no:'6175', name:'Trichy Intercity',    from:'Trichy Junction (TPJ)', to:'Coimbatore Junction',  dep:'14:30',arr:'18:00',dur:'3h 30m',fare:{SL:115,'3A':300,'2A':425,'1A':720,'2S':68}, avail:'Available'},
+    {no:'6188', name:'Erode Passenger',     from:'Trichy Junction (TPJ)', to:'Erode Junction',       dep:'16:00',arr:'19:30',dur:'3h 30m',fare:{SL:90, '3A':235,'2A':330,'1A':560,'2S':52}, avail:'Available'},
+    {no:'6190', name:'Salem Express',       from:'Trichy Junction (TPJ)', to:'Salem Junction',       dep:'10:00',arr:'13:20',dur:'3h 20m',fare:{SL:95, '3A':245,'2A':350,'1A':580,'2S':56}, avail:'Available'},
+    {no:'TPJ-EXP',name:'Thanjavur Exp',     from:'Trichy Junction (TPJ)', to:'Thanjavur Junction',   dep:'07:10',arr:'08:55',dur:'1h 45m',fare:{SL:45, '3A':110,'2A':155,'1A':260,'2S':28}, avail:'Available'},
+    {no:'6052', name:'Kumbakonam Pass',     from:'Trichy Junction (TPJ)', to:'Kumbakonam',           dep:'09:15',arr:'11:30',dur:'2h 15m',fare:{SL:55, '3A':140,'2A':200,'1A':335,'2S':34}, avail:'Available'},
+    {no:'6175B',name:'Bangalore Express',   from:'Trichy Junction (TPJ)', to:'Bangalore City (SBC)', dep:'14:30',arr:'21:55',dur:'7h 25m',fare:{SL:195,'3A':505,'2A':715,'1A':1210,'2S':115},avail:'Available'},
+    {no:'11043',name:'Mumbai Express',      from:'Trichy Junction (TPJ)', to:'Mumbai CST',           dep:'15:10',arr:'+2d',  dur:'36h+',  fare:{SL:420,'3A':1100,'2A':1560,'1A':2620,'2S':250},avail:'Available'},
+    {no:'22671',name:'Delhi Express',       from:'Trichy Junction (TPJ)', to:'New Delhi',            dep:'18:00',arr:'+2d',  dur:'46h',   fare:{SL:580,'3A':1520,'2A':2150,'1A':3620,'2S':345},avail:'Available'},
+    {no:'SUB-1',name:'TPJ Local',           from:'Trichy Junction (TPJ)', to:'Golden Rock',          dep:'08:00',arr:'08:22',dur:'22m',   fare:{SL:15, '3A':15, '2A':15, '1A':15, '2S':10}, avail:'Available'},
+    {no:'SUB-2',name:'TPJ Local',           from:'Trichy Junction (TPJ)', to:'Lalgudi',              dep:'17:30',arr:'18:10',dur:'40m',   fare:{SL:20, '3A':20, '2A':20, '1A':20, '2S':12}, avail:'Available'},
+    {no:'SUB-3',name:'Srirangam Local',     from:'Srirangam',             to:'Trichy Junction (TPJ)',dep:'07:00',arr:'07:20',dur:'20m',   fare:{SL:12, '3A':12, '2A':12, '1A':12, '2S':8},  avail:'Available'},
+    {no:'6136', name:'Rockfort Express',    from:'Chennai Egmore',        to:'Trichy Junction (TPJ)',dep:'21:00',arr:'02:45',dur:'5h 45m',fare:{SL:145,'3A':380,'2A':545,'1A':920,'2S':85}, avail:'Available'},
+    {no:'6044', name:'Pallavan Express',    from:'Chennai Egmore',        to:'Trichy Junction (TPJ)',dep:'06:10',arr:'11:55',dur:'5h 45m',fare:{SL:160,'3A':415,'2A':590,'1A':990,'2S':95}, avail:'Available'},
+    {no:'12662',name:'Trichy Madurai IC',   from:'Madurai Junction',      to:'Trichy Junction (TPJ)',dep:'06:00',arr:'08:40',dur:'2h 40m',fare:{SL:95, '3A':245,'2A':350,'1A':580,'2S':55}, avail:'Available'},
+    {no:'6039', name:'Cheran Express',      from:'Coimbatore Junction',   to:'Trichy Junction (TPJ)',dep:'18:00',arr:'21:30',dur:'3h 30m',fare:{SL:120,'3A':310,'2A':440,'1A':750,'2S':70}, avail:'Available'},
+    {no:'6210', name:'Dindigul Express',    from:'Trichy Junction (TPJ)', to:'Dindigul Junction',    dep:'11:30',arr:'13:00',dur:'1h 30m',fare:{SL:42, '3A':105,'2A':148,'1A':248,'2S':26}, avail:'Available'},
+    {no:'6212', name:'Karur Passenger',     from:'Trichy Junction (TPJ)', to:'Karur Junction',       dep:'13:00',arr:'14:15',dur:'1h 15m',fare:{SL:38, '3A':95, '2A':132,'1A':222,'2S':23}, avail:'Available'},
+    {no:'16735',name:'Nagercoil Express',   from:'Trichy Junction (TPJ)', to:'Tirunelveli Junction', dep:'16:45',arr:'20:30',dur:'3h 45m',fare:{SL:110,'3A':285,'2A':400,'1A':675,'2S':66}, avail:'Available'},
   ];
 
   function searchTrains() {
     const from = document.getElementById('train-from').value;
     const to   = document.getElementById('train-to').value;
-    const cls  = document.getElementById('train-class').value;
+    const cls  = document.getElementById('train-class').value || '2S';
     const el   = document.getElementById('train-results');
-    if (!from || !to) { el.innerHTML=`<div class="empty-state">Please select both From and To stations</div>`; return; }
-    if (from===to)    { el.innerHTML=`<div class="empty-state">From and To cannot be the same</div>`; return; }
-
-    let html = `<div class="results-wrap">
-      <div class="results-header train-grid">
-        <span>Train No.</span><span>Name</span><span>Departs</span><span>Arrives</span><span>Fare (${cls})</span><span>Book</span>
-      </div>`;
-    TRAIN_DATA.forEach(t => {
-      const avail = t.avail === 'Available';
-      html += `<div class="result-row train-grid">
+    if(!from||!to){el.innerHTML=`<div class="empty-state">Please select both From and To stations</div>`;return;}
+    if(from===to){el.innerHTML=`<div class="empty-state">From and To cannot be the same</div>`;return;}
+    const filtered = ALL_TRAINS.filter(t => t.from === from && t.to === to);
+    if(!filtered.length){el.innerHTML=`<div class="empty-state">No trains found for this route.<br>Try a different From / To combination.</div>`;return;}
+    let html=`<div class="results-wrap"><div class="results-header train-grid"><span>Train No.</span><span>Name</span><span>Departs</span><span>Arrives</span><span>Fare (${cls})</span><span>Book</span></div>`;
+    filtered.forEach(t=>{
+      const fare=t.fare[cls]||t.fare['2S'];
+      const avail=t.avail==='Available';
+      html+=`<div class="result-row train-grid">
         <span><strong>${t.no}</strong></span>
-        <span>${t.name}<br><span style="font-size:11px;opacity:0.4;letter-spacing:0.1em">${t.dur}</span></span>
-        <span>${t.dep}</span>
-        <span>${t.arr}</span>
-        <span>₹${t.fare}<br><span class="${avail?'status-on-time':'status-delayed'}" style="font-size:11px;">${t.avail}</span></span>
-        <span>${avail ? `<button class="book-row-btn" onclick="openModal('${t.name}','${from}','${to}','${t.dep}','₹${t.fare}')">Book</button>` : `<span style="font-size:11px;opacity:0.3;letter-spacing:0.1em;text-transform:uppercase">Waitlist</span>`}</span>
+        <span>${t.name}<div class="row-sub">${t.dur}</div></span>
+        <span>${t.dep}</span><span>${t.arr}</span>
+        <span>₹${fare}<div class="${avail?'avail-ok':'avail-wait'}">${t.avail}</div></span>
+        <span>${avail?`<button class="book-row-btn" onclick="openModal('${t.name}','${from}','${to}','${t.dep}','₹${fare}')">Book</button>`:`<span style="font-size:11px;opacity:0.3;text-transform:uppercase;letter-spacing:0.1em">Waitlist</span>`}</span>
       </div>`;
     });
-    html += `</div>`;
-    el.innerHTML = html;
+    el.innerHTML=html+`</div>`;
   }
 
-  /* ── Fare calculator ── */
-  const FARE_RATES = {
-    ordinary:{ perKm:0.55, base:8  },
-    express: { perKm:0.80, base:12 },
-    town:    { perKm:0.50, base:6  },
-    general: { perKm:0.35, base:10 },
-    sleeper: { perKm:0.65, base:25 },
-    ac3:     { perKm:1.80, base:50 },
-    ac2:     { perKm:2.60, base:80 },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  let currentStep = 1;
+
+  const PASS_PRICES = {
+    'Student':{'Zone A (City Core)':{'1 Month':150,'3 Months':420,'6 Months':800,'1 Year':1500},
+               'Zone B (Extended)':{'1 Month':200,'3 Months':560,'6 Months':1050,'1 Year':1950},
+               'Zone C (Outskirts)':{'1 Month':250,'3 Months':690,'6 Months':1300,'1 Year':2400},
+               'All Zones':{'1 Month':350,'3 Months':980,'6 Months':1850,'1 Year':3400}},
+    'Monthly':{'Zone A (City Core)':{'1 Month':300,'3 Months':850,'6 Months':1600,'1 Year':3000},
+               'Zone B (Extended)':{'1 Month':400,'3 Months':1120,'6 Months':2100,'1 Year':3900},
+               'Zone C (Outskirts)':{'1 Month':500,'3 Months':1390,'6 Months':2600,'1 Year':4800},
+               'All Zones':{'1 Month':700,'3 Months':1960,'6 Months':3700,'1 Year':6800}},
+    'Quarterly':{'Zone A (City Core)':{'1 Month':280,'3 Months':800,'6 Months':1500,'1 Year':2800},
+               'Zone B (Extended)':{'1 Month':370,'3 Months':1050,'6 Months':1950,'1 Year':3650},
+               'Zone C (Outskirts)':{'1 Month':460,'3 Months':1300,'6 Months':2450,'1 Year':4500},
+               'All Zones':{'1 Month':650,'3 Months':1820,'6 Months':3400,'1 Year':6300}},
+    'Senior Citizen':{'Zone A (City Core)':{'1 Month':80,'3 Months':220,'6 Months':420,'1 Year':800},
+               'Zone B (Extended)':{'1 Month':100,'3 Months':280,'6 Months':520,'1 Year':980},
+               'Zone C (Outskirts)':{'1 Month':120,'3 Months':340,'6 Months':640,'1 Year':1200},
+               'All Zones':{'1 Month':160,'3 Months':440,'6 Months':840,'1 Year':1600}},
+    'Differently Abled':{'Zone A (City Core)':{'1 Month':0,'3 Months':0,'6 Months':0,'1 Year':0},
+               'Zone B (Extended)':{'1 Month':0,'3 Months':0,'6 Months':0,'1 Year':0},
+               'Zone C (Outskirts)':{'1 Month':0,'3 Months':0,'6 Months':0,'1 Year':0},
+               'All Zones':{'1 Month':0,'3 Months':0,'6 Months':0,'1 Year':0}},
   };
 
-  function calcFare() {
-    const mode = document.getElementById('fare-mode').value;
-    const from = document.getElementById('fare-from').value;
-    const to   = document.getElementById('fare-to').value;
-    const pax  = parseInt(document.getElementById('fare-pax').value);
-    const distEl  = document.getElementById('fare-dist');
-    const baseEl  = document.getElementById('fare-base');
-    const totalEl = document.getElementById('fare-total');
+  function validateStep(step) {
+    let ok = true;
+    const show = (id, show) => { document.getElementById(id).classList.toggle('show', show); };
+    const val = id => document.getElementById(id).value.trim();
 
-    if (!mode || !from || !to || from===to) {
-      [distEl,baseEl,totalEl].forEach(e=>{ e.textContent=e===distEl?'— KM':'₹—'; e.classList.add('muted'); });
+    if (step === 1) {
+      const nameOk = /^[a-zA-Z ]+$/.test(val('p-name')) && val('p-name').length>0;
+      const dobOk  = val('p-dob') && new Date(val('p-dob')) < new Date();
+      const genderOk = val('p-gender') !== '';
+      const mobOk  = /^\d{10}$/.test(val('p-mobile'));
+      const emailRaw = val('p-email');
+      const emailOk = emailRaw==='' || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailRaw);
+      const aadhOk  = /^\d{12}$/.test(val('p-aadhaar'));
+      const photoEl = document.getElementById('p-photo');
+      const photoOk = photoEl.files.length>0 && photoEl.files[0].size<=512000 &&
+                      ['image/jpeg','image/jpg','image/png'].includes(photoEl.files[0].type);
+      show('e-name',!nameOk); show('e-dob',!dobOk); show('e-gender',!genderOk);
+      show('e-mobile',!mobOk); show('e-email',!emailOk); show('e-aadhaar',!aadhOk);
+      show('e-photo',!photoOk);
+      ok = nameOk&&dobOk&&genderOk&&mobOk&&emailOk&&aadhOk&&photoOk;
+    } else if (step === 2) {
+      const a1Ok = val('p-addr1').length>0;
+      const cityOk = val('p-city').length>0;
+      const pinOk  = /^\d{6}$/.test(val('p-pin'));
+      show('e-addr1',!a1Ok); show('e-city',!cityOk); show('e-pin',!pinOk);
+      ok = a1Ok&&cityOk&&pinOk;
+    } else if (step === 3) {
+      const ptOk  = val('p-passtype')!=='';
+      const rtOk  = val('p-route')!=='';
+      const vlOk  = val('p-validity')!=='';
+      const sdRaw = val('p-startdate');
+      const sdOk  = sdRaw!=='' && new Date(sdRaw) >= new Date(new Date().toDateString());
+      show('e-passtype',!ptOk); show('e-route',!rtOk);
+      show('e-validity',!vlOk); show('e-startdate',!sdOk);
+      ok = ptOk&&rtOk&&vlOk&&sdOk;
+    }
+    return ok;
+  }
+
+  function nextStep(from) {
+    if (!validateStep(from)) return;
+    goToStep(from+1);
+  }
+
+  function prevStep(from) { goToStep(from-1); }
+
+  function goToStep(n) {
+    document.getElementById(`step-${currentStep}`).classList.remove('active');
+    document.getElementById(`ps-${currentStep}`).classList.remove('active');
+    document.getElementById(`ps-${currentStep}`).classList.add('done');
+    currentStep = n;
+    document.getElementById(`step-${n}`).classList.add('active');
+    document.getElementById(`ps-${n}`).classList.add('active');
+    document.getElementById(`ps-${n}`).classList.remove('done');
+    if (n===4) populateReview();
+    window.scrollTo({top:document.getElementById('panel-pass').offsetTop - 80, behavior:'smooth'});
+  }
+
+  function maskAadhaar(a) {
+    return 'XXXX-XXXX-' + a.slice(-4);
+  }
+
+  function populateReview() {
+    const g = id => document.getElementById(id).value.trim();
+    document.getElementById('r-name').textContent    = g('p-name').toUpperCase();
+    document.getElementById('r-dob').textContent     = g('p-dob');
+    document.getElementById('r-gender').textContent  = g('p-gender').toUpperCase();
+    document.getElementById('r-mobile').textContent  = g('p-mobile');
+    document.getElementById('r-email').textContent   = g('p-email')||'—';
+    document.getElementById('r-aadhaar').textContent = maskAadhaar(g('p-aadhaar'));
+    const photo = document.getElementById('p-photo').files[0];
+    document.getElementById('r-photo').textContent   = photo ? photo.name.toUpperCase() : '—';
+
+    const addr = g('p-addr1') + (g('p-addr2')?' '+g('p-addr2'):'');
+    document.getElementById('r-addr').textContent    = addr.toUpperCase();
+    document.getElementById('r-city').textContent    = g('p-city').toUpperCase();
+    document.getElementById('r-pin').textContent     = g('p-pin');
+    document.getElementById('r-passtype').textContent= g('p-passtype').toUpperCase();
+    document.getElementById('r-route').textContent   = g('p-route').toUpperCase();
+    document.getElementById('r-validity').textContent= g('p-validity').toUpperCase();
+    document.getElementById('r-startdate').textContent= g('p-startdate');
+
+    const pt = g('p-passtype'), rt = g('p-route'), vl = g('p-validity');
+    const base = (PASS_PRICES[pt]&&PASS_PRICES[pt][rt]&&PASS_PRICES[pt][rt][vl]) || 0;
+    const total = base + 25;
+    document.getElementById('pay-type').textContent    = pt||'—';
+    document.getElementById('pay-zone').textContent    = rt||'—';
+    document.getElementById('pay-validity').textContent= vl||'—';
+    document.getElementById('pay-base').textContent    = base===0?'FREE':'₹'+base;
+    document.getElementById('pay-total').textContent   = base===0?'₹25':'₹'+total;
+  }
+
+  function submitPass() {
+    if (!document.getElementById('p-declare').checked) {
+      document.getElementById('e-declare').classList.add('show');
       return;
     }
-    const p = STOPS[from], d = STOPS[to];
-    if (!p || !d) return;
-    const dist = haversine(p.lat,p.lng,d.lat,d.lng);
-    const r = FARE_RATES[mode];
-    const base = Math.round(r.base + dist * r.perKm);
-    const total = base * pax;
-
-    distEl.textContent  = dist.toFixed(1) + ' KM'; distEl.classList.remove('muted');
-    baseEl.textContent  = '₹' + base;               baseEl.classList.remove('muted');
-    totalEl.textContent = '₹' + total;               totalEl.classList.remove('muted');
+    document.getElementById('e-declare').classList.remove('show');
+    const ref = 'TRY-BP-' + Math.floor(100000+Math.random()*900000);
+    document.getElementById('pass-ref').textContent = ref;
+    document.getElementById('pass-success').style.display = 'block';
+    document.querySelectorAll('.pass-nav')[3].style.display = 'none';
   }
 
-  /* ── Modal ── */
-  let currentBooking = {};
 
-  function openModal(service, from, to, dep, fare) {
-    currentBooking = { service, from, to, dep, fare };
-    document.getElementById('modal-title').textContent = 'Book — ' + service;
-    document.getElementById('modal-info').innerHTML =
-      `${from}<br>↓<br>${to}<br>Departure: ${dep} &nbsp;·&nbsp; Fare: ${fare}`;
+  let currentBooking = {};
+  function openModal(svc,from,to,dep,fare){
+    currentBooking={svc,from,to,dep,fare};
+    document.getElementById('modal-title').textContent='Book — '+svc;
+    document.getElementById('modal-info').innerHTML=`${from}<br>↓<br>${to}<br>Departure: ${dep} &nbsp;·&nbsp; Fare: ${fare}`;
     document.getElementById('confirm-box').classList.remove('show');
-    document.getElementById('pax-name').value = '';
-    document.getElementById('pax-mobile').value = '';
+    document.getElementById('pax-name').value='';
+    document.getElementById('pax-mobile').value='';
     document.getElementById('modal').classList.add('open');
   }
-
-  function closeModal() {
-    document.getElementById('modal').classList.remove('open');
-  }
-
-  function confirmBooking() {
-    const name   = document.getElementById('pax-name').value.trim();
-    const mobile = document.getElementById('pax-mobile').value.trim();
-    const pay    = document.getElementById('pax-payment').value;
-    if (!name || !mobile) { alert('Please enter your name and mobile number.'); return; }
-    const ref = 'TRY-' + Math.floor(100000 + Math.random()*900000);
-    document.getElementById('conf-ref').textContent = ref;
-    document.getElementById('conf-detail').innerHTML =
-      `Passenger: ${name}<br>Mobile: ${mobile}<br>Payment: ${pay}<br>Service: ${currentBooking.service}<br>${currentBooking.from} → ${currentBooking.to}<br>Dep: ${currentBooking.dep} · Fare: ${currentBooking.fare}`;
+  function closeModal(){document.getElementById('modal').classList.remove('open');}
+  function confirmBooking(){
+    const name=document.getElementById('pax-name').value.trim();
+    const mob =document.getElementById('pax-mobile').value.trim();
+    const pay =document.getElementById('pax-payment').value;
+    if(!name||!mob){alert('Please enter your name and mobile number.');return;}
+    const ref='TRY-'+Math.floor(100000+Math.random()*900000);
+    document.getElementById('conf-ref').textContent=ref;
+    document.getElementById('conf-detail').innerHTML=
+      `Passenger: ${name}<br>Mobile: ${mob}<br>Payment: ${pay}<br>${currentBooking.from} → ${currentBooking.to}<br>Dep: ${currentBooking.dep} · Fare: ${currentBooking.fare}`;
     document.getElementById('confirm-box').classList.add('show');
   }
+  document.getElementById('modal').addEventListener('click',e=>{if(e.target===document.getElementById('modal'))closeModal();});
 
-  /* close modal on backdrop click */
-  document.getElementById('modal').addEventListener('click', e => {
-    if (e.target === document.getElementById('modal')) closeModal();
-  });
-
-  /* Set today's date as default */
   const today = new Date().toISOString().split('T')[0];
-  document.getElementById('bus-date').value  = today;
   document.getElementById('train-date').value = today;
 </script>
 </body>

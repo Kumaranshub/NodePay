@@ -16,9 +16,18 @@
       color: #fff;
       font-family: 'Anton', sans-serif;
       overflow: hidden;
-    }
 
-    /* NAV */
+
+
+
+
+
+
+
+
+
+
+
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -31,6 +40,13 @@
       background: #000;
       border-bottom: 1px solid #fff;
     }
+
+
+
+
+
+
+
 
    nav a {
   font-family: 'Anton', sans-serif;
@@ -48,7 +64,6 @@
     nav a:hover { text-decoration: underline; }
     nav a.active { text-decoration: underline; }
 
-    /* LAYOUT */
     .layout {
       display: grid;
       grid-template-columns: 680px 1fr;
@@ -56,7 +71,7 @@
       padding-top: 57px;
     }
 
-    /* LEFT PANEL */
+
     .panel {
       background: #000;
       border-right: 1px solid #fff;
@@ -69,7 +84,7 @@
 
     .panel::-webkit-scrollbar { display: none; }
 
-    /* Hero heading */
+
     .hero-heading {
       font-family: 'Anton', sans-serif;
       font-size: clamp(42px, 5.5vw, 72px);
@@ -79,7 +94,7 @@
       color: #fff;
     }
 
-    /* Location buttons (styled like big rectangular buttons) */
+
     .location-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -121,7 +136,7 @@
       color: #000;
     }
 
-    /* Text input — same visual as dropdown, hidden by default */
+
     .loc-wrap .custom-input {
       display: none;
       width: 100%;
@@ -141,7 +156,7 @@
       color: rgba(255,255,255,0.4);
     }
 
-    /* Back link below input */
+
     .loc-wrap .back-link {
       display: none;
       font-family: 'Anton', sans-serif;
@@ -156,7 +171,7 @@
 
     .loc-wrap .back-link:hover { color: #fff; }
 
-    /* Travel Your Way container wraps header + ride options */
+
     .travel-wrap {
       border: 2px solid #fff;
     }
@@ -172,7 +187,7 @@
       border-bottom: 2px solid #fff;
     }
 
-    /* Ride selector */
+
     .ride-row {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -197,11 +212,9 @@
     }
 
     .ride-opt:last-child { border-right: none; }
-
     .ride-opt .ride-type { font-size: 28px; display: block; }
     .ride-opt .ride-name { font-size: 15px; letter-spacing: 0.1em; }
     .ride-opt .ride-rate { font-size: 11px; letter-spacing: 0.04em; opacity: 0.6; }
-
     .ride-opt.selected,
     .ride-opt:hover {
       background: #fff;
@@ -211,7 +224,7 @@
     .ride-opt.selected .ride-rate,
     .ride-opt:hover .ride-rate { opacity: 1; }
 
-    /* Info box */
+
     .info-box {
       border: 2px solid #fff;
       padding: 20px 28px;
@@ -243,7 +256,7 @@
 
     .info-item .info-value.empty { opacity: 0.3; }
 
-    /* Book Now */
+
     .book-btn {
       background: #fff;
       color: #000;
@@ -263,10 +276,26 @@
       color: #fff;
     }
 
-    /* MAP */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     #map { width: 100%; height: 100%; }
 
-    /* Leaflet popup overrides */
+
     .leaflet-popup-content-wrapper {
       background: #000 !important;
       border: 2px solid #fff !important;
@@ -292,7 +321,6 @@
     .popup-inner .p-route { font-size: 13px; display: block; text-align: center; line-height: 1.6; margin-bottom: 10px; opacity: 0.7; }
     .popup-inner .p-fare { font-size: 30px; display: block; text-align: center; }
 
-    /* Mobile */
     @media (max-width: 860px) {
       html, body { overflow: auto; }
       .layout { grid-template-columns: 1fr; height: auto; }
@@ -305,7 +333,23 @@
 </head>
 <body>
 
-  <!-- NAV -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   <nav>
     <a href="index.html">Home</a>
     <a href="public-transportation-tickets.html">Public-Transportation-Tickets</a>
@@ -315,15 +359,15 @@
 
   <div class="layout">
 
-    <!-- LEFT PANEL -->
+
     <div class="panel">
 
-      <!-- Heading -->
+
       <div class="hero-heading">
         Your ride.<br>Your time.<br>Your destination.
       </div>
 
-      <!-- Pick Up + Drop -->
+
       <div class="location-row">
         <div class="loc-wrap">
           <select id="pickup" onchange="handleSelect(this, 'pickup-input', 'pickup-back')">
@@ -363,7 +407,25 @@
         </div>
       </div>
 
-      <!-- Travel Your Way + Ride options -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       <div class="travel-wrap">
         <div class="travel-label">Travel Your Way</div>
         <div class="ride-row">
@@ -385,7 +447,7 @@
         </div>
       </div>
 
-      <!-- Distance + Charges -->
+
       <div class="info-box">
         <div class="info-item">
           <span class="info-label">Distance</span>
@@ -397,17 +459,17 @@
         </div>
       </div>
 
-      <!-- Book Now -->
+
       <button class="book-btn" onclick="bookNow()">Book Now</button>
 
     </div>
 
-    <!-- MAP -->
+
     <div id="map"></div>
   </div>
 
   <script>
-    /* ── Transform dropdown → text input when "Type Custom" selected ── */
+
     function handleSelect(selectEl, inputId, backId) {
       if (selectEl.value === '__type__') {
         selectEl.style.display = 'none';
@@ -433,7 +495,29 @@
       updateFare();
     }
 
-    /* Helper: get current value from either dropdown or custom input */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     function getLocValue(selectId, inputId) {
       const sel = document.getElementById(selectId);
       const inp = document.getElementById(inputId);
@@ -472,8 +556,6 @@
       subdomains: 'abcd',
       maxZoom: 19,
     }).addTo(map);
-
-    // Remove Leaflet attribution
     map.attributionControl.remove();
 
     function markerIcon() {

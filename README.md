@@ -18,7 +18,7 @@ Device-to-Device • Mesh Networking • Offline Tokens • Cryptographic Securi
 <img src="https://img.shields.io/badge/payments-offline-purple">
 </p>
 
-# Why NodePay?
+# Why?
 
 Current digital payment systems depend on:
 

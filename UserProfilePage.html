@@ -1,0 +1,1890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile Page</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-primary: #0a0a0a;
+      --bg-secondary: rgba(20, 20, 20, 0.8);
+      --bg-tertiary: rgba(30, 30, 30, 0.6);
+      --text-primary: #ffffff;
+      --text-secondary: #d1d5db;
+      --text-muted: #9ca3af;
+      --border-color: rgba(255,255,255,0.1);
+      --border-hover: rgba(255,255,255,0.2);
+      --blue: #3b82f6;
+      --blue-hover: #2563eb;
+      --shadow-blue: transparent;
+    }
+
+    [data-theme="light"] {
+      --bg-primary: #ffffff;
+      --bg-secondary: rgba(249, 250, 251, 0.95);
+      --bg-tertiary: rgba(243, 244, 246, 0.8);
+      --text-primary: #111827;
+      --text-secondary: #374151;
+      --text-muted: #6b7280;
+      --border-color: rgba(0,0,0,0.1);
+      --border-hover: rgba(0,0,0,0.2);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+    }
+
+    .create-view {
+      min-height: 100vh;
+      display: block;
+    }
+
+    .create-view.hidden {
+      display: none;
+    }
+
+    .header {
+      background: var(--bg-secondary);
+      padding: 3rem 2rem;
+      text-align: center;
+      color: var(--text-primary);
+      position: relative;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .theme-toggle {
+      position: absolute;
+      top: 2rem;
+      right: 2rem;
+      background: var(--blue);
+      border: none;
+      padding: 0.5rem 1.25rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: white;
+      font-family: inherit;
+    }
+
+    .theme-toggle:hover {
+      background: var(--blue-hover);
+    }
+
+    .photo-placeholder {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 3px dashed var(--border-hover);
+      margin: 0 auto 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      position: relative;
+      overflow: hidden;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .photo-placeholder:hover {
+      border-color: var(--blue);
+    }
+
+    .photo-placeholder input[type="file"] {
+      display: none;
+    }
+
+    .photo-placeholder.has-image {
+      border-style: solid;
+    }
+
+    #photoText {
+      pointer-events: none;
+    }
+
+    .title {
+      font-size: 2.5rem;
+      margin: 0 0 0.5rem 0;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: var(--text-primary);
+    }
+
+    .subtitle {
+      font-size: 1rem;
+      margin: 0;
+      opacity: 0.9;
+      font-weight: 300;
+      color: var(--text-secondary);
+    }
+
+    .progress-container {
+      max-width: 900px;
+      margin: -1rem auto 0;
+      padding: 0 2rem;
+      position: relative;
+      z-index: 10;
+    }
+
+    .progress-steps {
+      background: var(--bg-secondary);
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      border: 1px solid var(--border-color);
+    }
+
+    .step {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      position: relative;
+    }
+
+    .step-number {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: var(--bg-tertiary);
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      border: 2px solid var(--border-color);
+    }
+
+    .step.active .step-number {
+      background: var(--blue);
+      color: white;
+      border-color: var(--blue);
+    }
+
+    .step.completed .step-number {
+      background: var(--blue);
+      color: white;
+      border-color: var(--blue);
+    }
+
+    .step-label {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .step.active .step-label {
+      color: var(--blue);
+      font-weight: 600;
+    }
+
+    .step.completed .step-label {
+      color: var(--blue);
+    }
+
+    .step-divider {
+      flex: 1;
+      height: 2px;
+      background-color: var(--border-color);
+      margin: 0 0.5rem;
+    }
+
+    .step.completed + .step-divider {
+      background: var(--blue);
+    }
+
+    .form-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .error-summary {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid #ef4444;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 2rem;
+      color: #fca5a5;
+      display: none;
+    }
+
+    .error-summary.show {
+      display: block;
+    }
+
+    .error-summary ul {
+      margin-top: 0.5rem;
+      margin-left: 1.5rem;
+      color: #fca5a5;
+    }
+
+    .form-step {
+      display: none;
+    }
+
+    .form-step.active {
+      display: block;
+    }
+
+    .section {
+      background: var(--bg-secondary);
+      padding: 2rem;
+      border-radius: 12px;
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      border: 1px solid var(--border-color);
+    }
+
+    .section-title {
+      font-size: 1.25rem;
+      margin-bottom: 1.5rem;
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group.full-width {
+      grid-column: 1 / -1;
+    }
+
+    .form-group label {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      padding: 0.75rem 1rem;
+      border: 1.5px solid var(--border-color);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      outline: none;
+      font-family: inherit;
+      background-color: var(--bg-tertiary);
+      color: var(--text-primary);
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--blue);
+      background-color: var(--bg-secondary);
+    }
+
+    .form-group input.error,
+    .form-group select.error,
+    .form-group textarea.error {
+      border-color: #ef4444;
+      background-color: rgba(239, 68, 68, 0.1);
+    }
+
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+      color: var(--text-muted);
+    }
+
+    .error-message {
+      color: #fca5a5;
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+      display: none;
+    }
+
+    .error-message.show {
+      display: block;
+    }
+
+    .form-group select {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%239ca3af' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      padding-right: 2.5rem;
+    }
+
+    .form-group select option {
+      background-color: var(--bg-secondary);
+      color: var(--text-primary);
+      padding: 0.5rem;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+    }
+
+    .radio-group {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .radio-label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+    }
+
+    .radio-label input {
+      cursor: pointer;
+      width: 18px;
+      height: 18px;
+      accent-color: var(--blue);
+    }
+
+    .skills-selection {
+      margin-bottom: 1.5rem;
+    }
+
+    .category-selector {
+      margin-bottom: 1.5rem;
+    }
+
+    .category-selector label {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      display: block;
+    }
+
+    .category-selector select {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1.5px solid var(--border-color);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      outline: none;
+      font-family: inherit;
+      background-color: var(--bg-tertiary);
+      color: var(--text-primary);
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%239ca3af' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      padding-right: 2.5rem;
+    }
+
+    .category-selector select:focus {
+      border-color: var(--blue);
+      background-color: var(--bg-secondary);
+    }
+
+    .category-selector select option {
+      background-color: var(--bg-secondary);
+      color: var(--text-primary);
+      padding: 0.5rem;
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .skill-checkbox {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      border: 1.5px solid var(--border-color);
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      background: var(--bg-tertiary);
+    }
+
+    .skill-checkbox:hover {
+      border-color: var(--blue);
+    }
+
+    .skill-checkbox input {
+      cursor: pointer;
+      width: 18px;
+      height: 18px;
+      accent-color: var(--blue);
+    }
+
+    .skill-checkbox.hidden {
+      display: none;
+    }
+
+    .selected-skills {
+      margin-top: 1.5rem;
+    }
+
+    .selected-skills-title {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.75rem;
+      font-weight: 500;
+    }
+
+    .selected-skills-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .skill-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+
+    .skill-tag .remove-skill {
+      cursor: pointer;
+      color: var(--text-muted);
+      font-weight: bold;
+    }
+
+    .skill-tag .remove-skill:hover {
+      color: #ef4444;
+    }
+
+    .char-count {
+      text-align: right;
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+    }
+
+    .form-navigation {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .btn {
+      padding: 0.875rem 2rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .btn-secondary {
+      background-color: var(--bg-tertiary);
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--border-hover);
+    }
+
+    .btn-primary {
+      background: var(--blue);
+      color: white;
+      border: none;
+    }
+
+    .btn-primary:hover {
+      background: var(--blue-hover);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .display-view {
+      min-height: 100vh;
+      background-color: var(--bg-primary);
+      display: none;
+    }
+
+    .display-view.show {
+      display: block;
+    }
+
+    .nav-bar {
+      background: var(--bg-secondary);
+      padding: 1.25rem 2rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .logo-circle {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--blue);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1rem;
+      box-shadow: 0 2px 8px var(--shadow-blue);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .nav-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.95rem;
+      cursor: pointer;
+    }
+
+    .nav-link:hover {
+      color: var(--blue);
+    }
+
+    .nav-link.active {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .hero-section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 5rem 2rem;
+      display: grid;
+      grid-template-columns: 400px 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .profile-photo {
+      width: 350px;
+      height: 350px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: none;
+      background: var(--blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 8rem;
+      color: #ffffff;
+      font-weight: 700;
+      border: none;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .hero-content {
+      max-width: 600px;
+    }
+
+    .role-tag {
+      color: var(--blue);
+      font-size: 0.95rem;
+      margin-bottom: 0.75rem;
+      font-weight: 500;
+    }
+
+    .hero-name {
+      font-size: 3.5rem;
+      color: var(--text-primary);
+      margin-bottom: 1.5rem;
+      font-weight: 700;
+      line-height: 1.1;
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .hero-age {
+      font-size: 1.5rem;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .hero-description {
+      color: var(--text-secondary);
+      font-size: 1rem;
+      line-height: 1.8;
+      margin-bottom: 2rem;
+    }
+
+    .what-i-do-section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3rem 2rem 5rem;
+    }
+
+    .section-header {
+      margin-bottom: 3rem;
+    }
+
+    .section-header h2 {
+      font-size: 2rem;
+      color: var(--text-primary);
+      font-weight: 700;
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-header h2::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -8px;
+      width: 40px;
+      height: 3px;
+      background: var(--blue);
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+    }
+
+    .service-card {
+      background: var(--bg-secondary);
+      padding: 2.5rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      border: 1px solid var(--border-color);
+    }
+
+    .service-card:hover {
+      border-color: var(--blue);
+    }
+
+    .service-card h3 {
+      font-size: 1.25rem;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+
+    .service-card p {
+      color: var(--text-secondary);
+      line-height: 1.7;
+      font-size: 0.95rem;
+    }
+
+    .skill-category-badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .experience-section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3rem 2rem;
+      display: none;
+    }
+
+    .experience-section.show {
+      display: block;
+    }
+
+    .experience-card {
+      background: var(--bg-secondary);
+      padding: 2rem;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      margin-bottom: 2rem;
+    }
+
+    .experience-header {
+      margin-bottom: 1rem;
+    }
+
+    .experience-title {
+      font-size: 1.5rem;
+      color: var(--text-primary);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .experience-company {
+      font-size: 1.1rem;
+      color: var(--blue);
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+
+    .experience-duration {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+
+    .experience-description {
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    .education-section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3rem 2rem;
+    }
+
+    .education-card {
+      background: var(--bg-secondary);
+      padding: 2rem;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      margin-bottom: 2rem;
+    }
+
+    .education-degree {
+      font-size: 1.5rem;
+      color: var(--text-primary);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .education-field {
+      font-size: 1.1rem;
+      color: var(--blue);
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+
+    .education-institution {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+    }
+
+    .education-year {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+
+    .experience-entry {
+      background: var(--bg-tertiary);
+      padding: 1.5rem;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      margin-bottom: 1rem;
+      position: relative;
+    }
+
+    .experience-entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .experience-entry-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .remove-experience-btn {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 0.25rem 0.75rem;
+      border-radius: 4px;
+      font-size: 0.875rem;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .remove-experience-btn:hover {
+      border-color: #ef4444;
+      color: #ef4444;
+    }
+
+    .add-experience-btn {
+      margin-top: 1rem;
+      padding: 0.75rem 1.5rem;
+      background: transparent;
+      color: var(--blue);
+      border: 1px solid var(--blue);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      width: 100%;
+    }
+
+    .add-experience-btn:hover {
+      background: var(--blue);
+      color: white;
+    }
+
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg-secondary);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--blue);
+      border-radius: 5px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--blue-hover);
+    }
+
+    @media (max-width: 968px) {
+      .hero-section {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+        text-align: center;
+      }
+
+      .profile-photo {
+        margin: 0 auto;
+      }
+
+      .hero-content {
+        margin: 0 auto;
+      }
+
+      .education-section,
+      .experience-section {
+        padding: 2rem 1rem;
+      }
+
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .skills-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .title {
+        font-size: 2rem;
+      }
+
+      .hero-name {
+        font-size: 2.5rem;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .hero-age {
+        font-size: 1.25rem;
+      }
+
+      .profile-photo {
+        width: 280px;
+        height: 280px;
+        font-size: 6rem;
+      }
+
+      .progress-steps {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .step-divider {
+        display: none;
+      }
+
+      .step {
+        width: 100%;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .experience-card {
+        padding: 1.5rem;
+      }
+
+      .education-card {
+        padding: 1.5rem;
+      }
+
+      .education-degree {
+        font-size: 1.25rem;
+      }
+
+      .experience-title {
+        font-size: 1.25rem;
+      }
+
+      .experience-entry {
+        padding: 1rem;
+      }
+
+      .experience-entry-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+      }
+
+      .remove-experience-btn {
+        align-self: flex-end;
+      }
+
+      .theme-toggle {
+        top: 1rem;
+        right: 1rem;
+        font-size: 0.875rem;
+        padding: 0.5rem 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="create-view" id="createView">
+    <div class="header">
+      <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle">Light</button>
+      <div class="photo-placeholder" id="photoPlaceholder" onclick="document.getElementById('photoInput').click()">
+        <span id="photoText">Add Photo</span>
+        <input type="file" id="photoInput" accept="image/*" onchange="handlePhotoUpload(event)">
+      </div>
+      <h1 class="title">Create Your Profile</h1>
+      <p class="subtitle">Fill in your details to get started.</p>
+    </div>
+
+    <div class="progress-container">
+      <div class="progress-steps">
+        <div class="step active" id="step1Indicator">
+          <div class="step-number">1</div>
+          <div class="step-label">Personal Details</div>
+        </div>
+        <div class="step-divider"></div>
+        <div class="step" id="step2Indicator">
+          <div class="step-number">2</div>
+          <div class="step-label">Education Details</div>
+        </div>
+        <div class="step-divider"></div>
+        <div class="step" id="step3Indicator">
+          <div class="step-number">3</div>
+          <div class="step-label">Skills & Summary</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-container">
+      <div class="error-summary" id="errorSummary">
+        <strong>Please fix the following errors:</strong>
+        <ul id="errorList"></ul>
+      </div>
+
+      <div class="form-step active" id="step1">
+        <div class="section">
+          <h2 class="section-title">Personal Details</h2>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Full Name *</label>
+              <input type="text" id="fullName" placeholder="e.g. C.Kumaran">
+              <div class="error-message" id="fullNameError"></div>
+            </div>
+            <div class="form-group">
+              <label>Date of Birth *</label>
+              <input type="date" id="dateOfBirth">
+              <div class="error-message" id="dateOfBirthError"></div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Gender *</label>
+              <div class="radio-group">
+                <label class="radio-label">
+                  <input type="radio" name="gender" value="Male">
+                  Male
+                </label>
+                <label class="radio-label">
+                  <input type="radio" name="gender" value="Female">
+                  Female
+                </label>
+              </div>
+              <div class="error-message" id="genderError"></div>
+            </div>
+            <div class="form-group">
+              <label>Email ID *</label>
+              <input type="email" id="email" placeholder="e.g. username@domain.com">
+              <div class="error-message" id="emailError"></div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Mobile Number *</label>
+              <input type="tel" id="mobileNumber" placeholder="e.g. 1234567890">
+              <div class="error-message" id="mobileNumberError"></div>
+            </div>
+            <div class="form-group">
+              <label>Nationality</label>
+              <input type="text" id="nationality" placeholder="e.g. Indian">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group full-width">
+              <label>Address *</label>
+              <textarea id="address" rows="3" placeholder="Enter your full address..."></textarea>
+              <div class="error-message" id="addressError"></div>
+            </div>
+          </div>
+        </div>
+        <div class="form-navigation">
+          <div></div>
+          <button class="btn btn-primary" onclick="nextStep(1)">Next →</button>
+        </div>
+      </div>
+
+      <div class="form-step" id="step2">
+        <div class="section">
+          <h2 class="section-title">Education Details</h2>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Highest Qualification *</label>
+              <select id="educationalQualification">
+                <option value="">Select Qualification</option>
+                <option value="No Formal Education">No Formal Education</option>
+                <option value="High School">High School</option>
+                <option value="Diploma / Vocational Training">Diploma / Vocational Training</option>
+                <option value="Associate Degree">Associate Degree</option>
+                <option value="Bachelor's Degree">Bachelor's Degree</option>
+                <option value="Master's Degree">Master's Degree</option>
+                <option value="PhD / Doctorate">PhD / Doctorate</option>
+                <option value="Professional Certification">Professional Certification</option>
+                <option value="Trade License / Apprenticeship">Trade License / Apprenticeship</option>
+              </select>
+              <div class="error-message" id="educationalQualificationError"></div>
+            </div>
+            <div class="form-group">
+              <label>Field of Study</label>
+              <input type="text" id="fieldOfStudy" placeholder="e.g. Computer Science">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Institution Name</label>
+              <input type="text" id="institutionName" placeholder="e.g. University of XYZ">
+            </div>
+            <div class="form-group">
+              <label>Year of Graduation</label>
+              <input type="number" id="graduationYear" placeholder="e.g. 2020" min="1950" max="2030">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Current Position/Title</label>
+              <input type="text" id="currentPosition" placeholder="e.g. Software Engineer">
+            </div>
+            <div class="form-group">
+              <label>Years of Experience</label>
+              <input type="number" id="yearsExperience" placeholder="e.g. 5" min="0" max="50">
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2 class="section-title">Work Experience</h2>
+          <div id="experienceEntriesContainer"></div>
+          <button type="button" class="add-experience-btn" onclick="addExperienceEntry()">+ Add Experience</button>
+        </div>
+        <div class="form-navigation">
+          <button class="btn btn-secondary" onclick="prevStep(2)">← Previous</button>
+          <button class="btn btn-primary" onclick="nextStep(2)">Next →</button>
+        </div>
+      </div>
+
+      <div class="form-step" id="step3">
+        <div class="section">
+          <h2 class="section-title">Skills</h2>
+
+          <div class="skills-selection">
+            <div class="category-selector">
+              <label>Select Skill Category</label>
+              <select id="skillCategory" onchange="filterSkillsByCategory()">
+                <option value="">All Skills</option>
+                <option value="technology">Technology & Digital</option>
+                <option value="trade">Trade & Practical</option>
+                <option value="business">Business & Professional</option>
+                <option value="creative">Creative</option>
+                <option value="service">Service & Care</option>
+                <option value="soft">General Work Skills</option>
+              </select>
+            </div>
+
+            <div class="skills-grid" id="skillsGrid"></div>
+
+            <div class="selected-skills" id="selectedSkillsContainer" style="display: none;">
+              <div class="selected-skills-title">Selected Skills:</div>
+              <div class="selected-skills-list" id="selectedSkillsList"></div>
+            </div>
+          </div>
+
+          <div class="error-message" id="skillsError"></div>
+        </div>
+
+        <div class="section">
+          <h2 class="section-title">Profile Summary</h2>
+          <div class="form-group full-width">
+            <textarea id="profileSummary" rows="5" placeholder="Write a brief summary about yourself, your experience, and what you're looking for... (minimum 30 characters)"></textarea>
+            <div class="char-count"><span id="charCount">0</span> / 30 min</div>
+            <div class="error-message" id="profileSummaryError"></div>
+          </div>
+        </div>
+
+        <div class="form-navigation">
+          <button class="btn btn-secondary" onclick="prevStep(3)">← Previous</button>
+          <button class="btn btn-primary" onclick="handleSubmit()">Create Profile</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="display-view" id="displayView">
+    <nav class="nav-bar">
+      <div class="nav-container">
+        <div class="logo">
+          <div class="logo-circle" id="navLogoCircle"></div>
+          <span id="navName"></span>
+        </div>
+        <div class="nav-links">
+          <a class="nav-link active">About Me</a>
+          <a class="nav-link" onclick="editProfile()" style="color: var(--blue); cursor: pointer;">Edit Profile</a>
+          <button class="theme-toggle" onclick="toggleTheme()" id="navThemeToggle" style="position: relative; top: 0; right: 0;">Light</button>
+        </div>
+      </div>
+    </nav>
+
+    <section class="hero-section">
+      <div class="profile-photo" id="profilePhoto"></div>
+      <div class="hero-content">
+        <div class="role-tag" id="roleTag"></div>
+        <h1 class="hero-name" id="heroName"></h1>
+        <p class="hero-description" id="heroDescription"></p>
+      </div>
+    </section>
+
+    <section class="education-section">
+      <div class="section-header">
+        <h2>Education</h2>
+      </div>
+      <div id="educationContent"></div>
+    </section>
+
+    <section class="experience-section" id="experienceSection">
+      <div class="section-header">
+        <h2>Work Experience</h2>
+      </div>
+      <div id="experienceContent"></div>
+    </section>
+
+    <section class="what-i-do-section">
+      <div class="section-header">
+        <h2>Skills</h2>
+      </div>
+      <div class="services-grid" id="servicesGrid"></div>
+    </section>
+  </div>
+
+  <script>
+    let currentStep = 1;
+    let uploadedPhotoURL = null;
+    let experienceEntries = [];
+    let experienceCounter = 0;
+
+    const skillsData = {
+      technology: [
+        { name: 'Computer Basics', description: 'Basic ability to operate computers, manage files, use internet browsers, and handle everyday digital tasks.' },
+        { name: 'MS Office / Google Workspace', description: 'Ability to create documents, spreadsheets, presentations, and collaborate using office productivity tools.' },
+        { name: 'Data Entry', description: 'Accurate typing and updating of information into systems or databases while maintaining consistency.' },
+        { name: 'Web Development', description: 'Building and maintaining websites or web apps using front-end or back-end technologies.' },
+        { name: 'Programming', description: 'Writing logical instructions in coding languages to build software, automate tasks, or solve problems.' },
+        { name: 'Graphic Design', description: 'Creating visual content such as posters, logos, or social media graphics using design tools.' },
+        { name: 'UI/UX Design', description: 'Designing user interfaces and improving user experience to make digital products intuitive and appealing.' },
+        { name: 'Digital Marketing', description: 'Promoting products or services online using ads, SEO, email marketing, and analytics.' },
+        { name: 'Social Media Management', description: 'Handling social media accounts, posting content, engaging audiences, and tracking performance.' }
+      ],
+      trade: [
+        { name: 'Electrician Work', description: 'Installing, repairing, and maintaining electrical wiring, systems, and equipment safely.' },
+        { name: 'Plumbing', description: 'Installing and repairing pipes, drainage systems, and water fixtures in buildings.' },
+        { name: 'Carpentry', description: 'Building, installing, or repairing wooden structures, furniture, or fittings.' },
+        { name: 'Welding', description: 'Joining metal parts using heat and tools to create strong, durable connections.' },
+        { name: 'Mechanic / Automotive Repair', description: 'Diagnosing and fixing vehicle issues, maintaining engines, and performing servicing.' },
+        { name: 'Tailoring / Sewing', description: 'Stitching, altering, or designing garments using sewing machines or handwork.' },
+        { name: 'Cooking / Baking', description: 'Preparing meals or baked goods while maintaining hygiene and proper techniques.' }
+      ],
+      business: [
+        { name: 'Accounting', description: 'Managing financial records, expenses, and transactions while ensuring accuracy.' },
+        { name: 'Sales', description: 'Promoting products or services, negotiating with customers, and closing deals.' },
+        { name: 'Customer Service', description: 'Helping customers resolve issues, answer questions, and improve satisfaction.' },
+        { name: 'Project Management', description: 'Planning, organizing, and monitoring tasks to complete projects on time.' },
+        { name: 'Business Management', description: 'Overseeing operations, resources, and strategy to run an organization effectively.' },
+        { name: 'Marketing', description: 'Identifying target audiences and promoting products or services strategically.' },
+        { name: 'HR & Recruitment', description: 'Hiring, onboarding, and managing employees while maintaining workplace policies.' }
+      ],
+      creative: [
+        { name: 'Drawing / Illustration', description: 'Creating hand-drawn or digital artwork for artistic or commercial use.' },
+        { name: 'Photography', description: 'Capturing images professionally or creatively using cameras and editing tools.' },
+        { name: 'Video Editing', description: 'Cutting, arranging, and enhancing video footage to produce polished content.' },
+        { name: 'Music / Singing', description: 'Performing vocal or instrumental music for entertainment or professional work.' },
+        { name: 'Writing / Content Creation', description: 'Producing articles, scripts, blogs, or marketing content for various platforms.' },
+        { name: 'Public Speaking', description: 'Delivering clear and engaging speeches or presentations to audiences.' }
+      ],
+      service: [
+        { name: 'Teaching / Tutoring', description: 'Helping others learn concepts, improve skills, or prepare for exams.' },
+        { name: 'Nursing / Caregiving', description: 'Providing medical or personal care to patients, elderly individuals, or dependents.' },
+        { name: 'Hospitality / Hotel Work', description: 'Serving guests, managing bookings, and ensuring a pleasant stay experience.' },
+        { name: 'Housekeeping', description: 'Cleaning and maintaining homes, offices, or hotels efficiently.' },
+        { name: 'Security Services', description: 'Monitoring premises and ensuring safety of people and property.' },
+        { name: 'Event Management', description: 'Planning and coordinating events, logistics, and vendors for smooth execution.' }
+      ],
+      soft: [
+        { name: 'Driving', description: 'Ability to operate vehicles safely while following traffic regulations.' },
+        { name: 'Time Management', description: 'Planning tasks effectively to meet deadlines and maintain productivity.' },
+        { name: 'Teamwork', description: 'Working cooperatively with others to achieve shared goals.' },
+        { name: 'Communication', description: 'Expressing ideas clearly and understanding others in spoken or written form.' },
+        { name: 'Problem Solving', description: 'Analyzing situations and finding practical solutions efficiently.' },
+        { name: 'Leadership', description: 'Guiding, motivating, and supporting others toward achieving objectives.' }
+      ]
+    };
+
+    const allSkills = [];
+    Object.entries(skillsData).forEach(([category, skills]) => {
+      skills.forEach(skill => {
+        allSkills.push({ ...skill, category });
+      });
+    });
+
+    let selectedSkills = [];
+
+    function handlePhotoUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          uploadedPhotoURL = e.target.result;
+          const placeholder = document.getElementById('photoPlaceholder');
+          const photoText = document.getElementById('photoText');
+          placeholder.style.backgroundImage = `url(${uploadedPhotoURL})`;
+          placeholder.classList.add('has-image');
+          photoText.style.display = 'none';
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function addExperienceEntry() {
+      const id = experienceCounter++;
+      const container = document.getElementById('experienceEntriesContainer');
+
+      const entryDiv = document.createElement('div');
+      entryDiv.className = 'experience-entry';
+      entryDiv.id = `experience-${id}`;
+      entryDiv.innerHTML = `
+        <div class="experience-entry-header">
+          <span class="experience-entry-title">Experience ${experienceEntries.length + 1}</span>
+          <button type="button" class="remove-experience-btn" onclick="removeExperienceEntry(${id})">Remove</button>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Company Name</label>
+            <input type="text" id="companyName-${id}" placeholder="e.g. Tech Corp">
+          </div>
+          <div class="form-group">
+            <label>Job Title</label>
+            <input type="text" id="jobTitle-${id}" placeholder="e.g. Senior Developer">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Start Date</label>
+            <input type="month" id="startDate-${id}">
+          </div>
+          <div class="form-group">
+            <label>End Date</label>
+            <input type="month" id="endDate-${id}" placeholder="Leave empty if current">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group full-width">
+            <label>Job Description</label>
+            <textarea id="description-${id}" rows="3" placeholder="Describe your responsibilities and achievements..."></textarea>
+          </div>
+        </div>
+      `;
+
+      container.appendChild(entryDiv);
+      experienceEntries.push(id);
+    }
+
+    function removeExperienceEntry(id) {
+      const entry = document.getElementById(`experience-${id}`);
+      if (entry) {
+        entry.remove();
+      }
+      experienceEntries = experienceEntries.filter(entryId => entryId !== id);
+
+      // Update entry numbers
+      experienceEntries.forEach((entryId, index) => {
+        const entryTitle = document.querySelector(`#experience-${entryId} .experience-entry-title`);
+        if (entryTitle) {
+          entryTitle.textContent = `Experience ${index + 1}`;
+        }
+      });
+    }
+
+    function collectExperienceData() {
+      const experiences = [];
+      experienceEntries.forEach(id => {
+        const companyName = document.getElementById(`companyName-${id}`)?.value || '';
+        const jobTitle = document.getElementById(`jobTitle-${id}`)?.value || '';
+        const startDate = document.getElementById(`startDate-${id}`)?.value || '';
+        const endDate = document.getElementById(`endDate-${id}`)?.value || '';
+        const description = document.getElementById(`description-${id}`)?.value || '';
+
+        if (companyName || jobTitle) {
+          experiences.push({
+            companyName,
+            jobTitle,
+            startDate,
+            endDate,
+            description
+          });
+        }
+      });
+      return experiences;
+    }
+
+    function initializeSkillsGrid() {
+      const skillsGrid = document.getElementById('skillsGrid');
+      skillsGrid.innerHTML = '';
+
+      allSkills.forEach((skill, index) => {
+        const label = document.createElement('label');
+        label.className = 'skill-checkbox';
+        label.dataset.category = skill.category;
+        label.dataset.skillName = skill.name.toLowerCase();
+        label.innerHTML = `
+          <input type="checkbox" value="${skill.name}" data-category="${skill.category}" onchange="updateSelectedSkills()">
+          ${skill.name}
+        `;
+        skillsGrid.appendChild(label);
+      });
+    }
+
+    function filterSkillsByCategory() {
+      const category = document.getElementById('skillCategory').value;
+      const checkboxes = document.querySelectorAll('.skill-checkbox');
+
+      checkboxes.forEach(checkbox => {
+        if (category === '' || checkbox.dataset.category === category) {
+          checkbox.classList.remove('hidden');
+        } else {
+          checkbox.classList.add('hidden');
+        }
+      });
+    }
+
+    function updateSelectedSkills() {
+      const checkedBoxes = document.querySelectorAll('#skillsGrid input[type="checkbox"]:checked');
+      selectedSkills = Array.from(checkedBoxes).map(cb => ({
+        name: cb.value,
+        category: cb.dataset.category
+      }));
+
+      displaySelectedSkills();
+    }
+
+    function displaySelectedSkills() {
+      const container = document.getElementById('selectedSkillsContainer');
+      const list = document.getElementById('selectedSkillsList');
+
+      if (selectedSkills.length === 0) {
+        container.style.display = 'none';
+        return;
+      }
+
+      container.style.display = 'block';
+      list.innerHTML = '';
+
+      selectedSkills.forEach(skill => {
+        const tag = document.createElement('div');
+        tag.className = 'skill-tag';
+        tag.innerHTML = `
+          ${skill.name}
+          <span class="remove-skill" onclick="removeSkill('${skill.name}')">×</span>
+        `;
+        list.appendChild(tag);
+      });
+    }
+
+    function removeSkill(skillName) {
+      const checkbox = document.querySelector(`#skillsGrid input[value="${skillName}"]`);
+      if (checkbox) {
+        checkbox.checked = false;
+      }
+      selectedSkills = selectedSkills.filter(s => s.name !== skillName);
+      displaySelectedSkills();
+    }
+
+    function toggleTheme() {
+      const html = document.documentElement;
+      const currentTheme = html.getAttribute('data-theme');
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      html.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+
+      // Update button text - show "Light" when in dark mode, "Dark" when in light mode
+      const buttonText = newTheme === 'dark' ? 'Light' : 'Dark';
+      const themeToggle = document.getElementById('themeToggle');
+      const navThemeToggle = document.getElementById('navThemeToggle');
+      if (themeToggle) themeToggle.textContent = buttonText;
+      if (navThemeToggle) navThemeToggle.textContent = buttonText;
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+
+      // Set initial button text
+      const buttonText = savedTheme === 'dark' ? 'Light' : 'Dark';
+      const themeToggle = document.getElementById('themeToggle');
+      const navThemeToggle = document.getElementById('navThemeToggle');
+      if (themeToggle) themeToggle.textContent = buttonText;
+      if (navThemeToggle) navThemeToggle.textContent = buttonText;
+
+      initializeSkillsGrid();
+
+      // Add first experience entry by default
+      addExperienceEntry();
+    });
+
+    const profileSummaryInput = document.getElementById('profileSummary');
+    const charCountSpan = document.getElementById('charCount');
+    profileSummaryInput.addEventListener('input', function() {
+      charCountSpan.textContent = this.value.length;
+    });
+
+    const inputs = document.querySelectorAll('input, select, textarea');
+    inputs.forEach(input => {
+      input.addEventListener('input', function() {
+        this.classList.remove('error');
+        const errorId = this.id + 'Error';
+        const errorElement = document.getElementById(errorId);
+        if (errorElement) {
+          errorElement.classList.remove('show');
+        }
+      });
+    });
+
+    const genderRadios = document.querySelectorAll('input[name="gender"]');
+    genderRadios.forEach(radio => {
+      radio.addEventListener('change', function() {
+        document.getElementById('genderError').classList.remove('show');
+      });
+    });
+
+    function updateProgressIndicator(step) {
+      for (let i = 1; i <= 3; i++) {
+        const stepIndicator = document.getElementById(`step${i}Indicator`);
+        stepIndicator.classList.remove('active', 'completed');
+        if (i < step) {
+          stepIndicator.classList.add('completed');
+        } else if (i === step) {
+          stepIndicator.classList.add('active');
+        }
+      }
+    }
+
+    function nextStep(step) {
+      if (!validateStep(step)) {
+        return;
+      }
+      document.getElementById(`step${step}`).classList.remove('active');
+      currentStep = step + 1;
+      document.getElementById(`step${currentStep}`).classList.add('active');
+      updateProgressIndicator(currentStep);
+      window.scrollTo(0, 0);
+    }
+
+    function prevStep(step) {
+      document.getElementById(`step${step}`).classList.remove('active');
+      currentStep = step - 1;
+      document.getElementById(`step${currentStep}`).classList.add('active');
+      updateProgressIndicator(currentStep);
+      window.scrollTo(0, 0);
+    }
+
+    function validateStep(step) {
+      const errors = {};
+      const errorSummary = document.getElementById('errorSummary');
+      const errorList = document.getElementById('errorList');
+      errorList.innerHTML = '';
+
+      if (step === 1) {
+        const fullName = document.getElementById('fullName').value;
+        if (!fullName.trim()) {
+          errors.fullName = 'Full name is required';
+        } else if (fullName.trim().length < 3) {
+          errors.fullName = 'Name must be at least 3 characters';
+        }
+
+        const dateOfBirth = document.getElementById('dateOfBirth').value;
+        if (!dateOfBirth) {
+          errors.dateOfBirth = 'Date of birth is required';
+        } else {
+          const birthDate = new Date(dateOfBirth);
+          const today = new Date();
+          let age = today.getFullYear() - birthDate.getFullYear();
+          const monthDiff = today.getMonth() - birthDate.getMonth();
+          if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+          }
+          if (age < 18) {
+            errors.dateOfBirth = 'You must be at least 18 years old';
+          }
+        }
+
+        const gender = document.querySelector('input[name="gender"]:checked');
+        if (!gender) {
+          errors.gender = 'Please select a gender';
+        }
+
+        const email = document.getElementById('email').value;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!email) {
+          errors.email = 'Email is required';
+        } else if (!emailRegex.test(email)) {
+          errors.email = 'Please enter a valid email address';
+        }
+
+        const mobileNumber = document.getElementById('mobileNumber').value;
+        const mobileRegex = /^\d{10}$/;
+        if (!mobileNumber) {
+          errors.mobileNumber = 'Mobile number is required';
+        } else if (!mobileRegex.test(mobileNumber)) {
+          errors.mobileNumber = 'Mobile number must be exactly 10 digits';
+        }
+
+        const address = document.getElementById('address').value;
+        if (!address.trim()) {
+          errors.address = 'Address is required';
+        }
+      } else if (step === 2) {
+        const qualification = document.getElementById('educationalQualification').value;
+        if (!qualification) {
+          errors.educationalQualification = 'Please select your qualification';
+        }
+      } else if (step === 3) {
+        const summary = document.getElementById('profileSummary').value;
+        if (!summary.trim()) {
+          errors.profileSummary = 'Profile summary is required';
+        } else if (summary.trim().length < 30) {
+          errors.profileSummary = 'Profile summary must be at least 30 characters';
+        }
+
+        if (selectedSkills.length === 0) {
+          errors.skills = 'Please select at least one skill';
+        }
+      }
+
+      if (Object.keys(errors).length > 0) {
+        Object.entries(errors).forEach(([field, message]) => {
+          const li = document.createElement('li');
+          li.textContent = message;
+          errorList.appendChild(li);
+
+          const errorElement = document.getElementById(field + 'Error');
+          if (errorElement) {
+            errorElement.textContent = message;
+            errorElement.classList.add('show');
+          }
+
+          const inputElement = document.getElementById(field);
+          if (inputElement) {
+            inputElement.classList.add('error');
+          }
+        });
+
+        errorSummary.classList.add('show');
+        window.scrollTo(0, 0);
+        return false;
+      }
+
+      errorSummary.classList.remove('show');
+      return true;
+    }
+
+    function getInitials(name) {
+      const parts = name.trim().split(' ');
+      if (parts.length >= 2) {
+        return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+      }
+      return name.substring(0, 2).toUpperCase();
+    }
+
+    function getCategoryName(category) {
+      const categoryNames = {
+        technology: 'Technology & Digital',
+        trade: 'Trade & Practical',
+        business: 'Business & Professional',
+        creative: 'Creative',
+        service: 'Service & Care',
+        soft: 'General Work Skills',
+        custom: 'Custom Skill'
+      };
+      return categoryNames[category] || 'General';
+    }
+
+    function getSkillDescription(skillName) {
+      const skill = allSkills.find(s => s.name === skillName);
+      return skill ? skill.description : `Experienced professional with expertise in ${skillName.toLowerCase()}, delivering high-quality results in collaborative environments.`;
+    }
+
+    function formatExperienceDuration(startDate, endDate) {
+      if (!startDate) return 'Duration not specified';
+
+      const start = new Date(startDate);
+      const startFormatted = start.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+
+      if (!endDate) {
+        return `${startFormatted} - Present`;
+      }
+
+      const end = new Date(endDate);
+      const endFormatted = end.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+      return `${startFormatted} - ${endFormatted}`;
+    }
+
+    function calculateAge(dateOfBirth) {
+      if (!dateOfBirth) return null;
+
+      const birthDate = new Date(dateOfBirth);
+      const today = new Date();
+      let age = today.getFullYear() - birthDate.getFullYear();
+      const monthDiff = today.getMonth() - birthDate.getMonth();
+
+      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+      }
+
+      return age;
+    }
+
+    function handleSubmit() {
+      if (!validateStep(3)) {
+        return;
+      }
+
+      const fullName = document.getElementById('fullName').value;
+      const dateOfBirth = document.getElementById('dateOfBirth').value;
+      const gender = document.querySelector('input[name="gender"]:checked')?.value;
+      const email = document.getElementById('email').value;
+      const mobileNumber = document.getElementById('mobileNumber').value;
+      const nationality = document.getElementById('nationality').value;
+      const address = document.getElementById('address').value;
+
+      const educationalQualification = document.getElementById('educationalQualification').value;
+      const fieldOfStudy = document.getElementById('fieldOfStudy').value;
+      const institutionName = document.getElementById('institutionName').value;
+      const graduationYear = document.getElementById('graduationYear').value;
+
+      const currentPosition = document.getElementById('currentPosition').value || 'Professional';
+      const yearsExperience = document.getElementById('yearsExperience').value;
+      const summary = document.getElementById('profileSummary').value;
+
+      // Calculate age
+      const age = calculateAge(dateOfBirth);
+
+      // Collect all experience data
+      const experiences = collectExperienceData();
+
+      const initials = getInitials(fullName);
+      const navLogoCircle = document.getElementById('navLogoCircle');
+
+      if (uploadedPhotoURL) {
+        navLogoCircle.style.backgroundImage = `url(${uploadedPhotoURL})`;
+        navLogoCircle.textContent = '';
+      } else {
+        navLogoCircle.textContent = initials;
+      }
+
+      document.getElementById('navName').textContent = fullName;
+
+      const profilePhoto = document.getElementById('profilePhoto');
+      if (uploadedPhotoURL) {
+        profilePhoto.style.backgroundImage = `url(${uploadedPhotoURL})`;
+        profilePhoto.style.backgroundSize = 'cover';
+        profilePhoto.style.backgroundPosition = 'center';
+        profilePhoto.textContent = '';
+      } else {
+        profilePhoto.textContent = initials;
+      }
+
+      document.getElementById('roleTag').textContent = nationality ? `${nationality} ${currentPosition}` : currentPosition;
+
+      // Display name with age
+      const heroNameElement = document.getElementById('heroName');
+      heroNameElement.innerHTML = `${fullName}${age ? `<span class="hero-age">${age} years</span>` : ''}`;
+
+      document.getElementById('heroDescription').textContent = summary;
+
+      // Display education
+      const educationContent = document.getElementById('educationContent');
+      educationContent.innerHTML = '';
+
+      if (educationalQualification) {
+        const educationCard = document.createElement('div');
+        educationCard.className = 'education-card';
+        educationCard.innerHTML = `
+          <h3 class="education-degree">${educationalQualification}</h3>
+          ${fieldOfStudy ? `<div class="education-field">${fieldOfStudy}</div>` : ''}
+          ${institutionName ? `<div class="education-institution">${institutionName}</div>` : ''}
+          ${graduationYear ? `<div class="education-year">Graduated: ${graduationYear}</div>` : ''}
+        `;
+        educationContent.appendChild(educationCard);
+      }
+
+      // Display work experiences if any provided
+      const experienceSection = document.getElementById('experienceSection');
+      const experienceContent = document.getElementById('experienceContent');
+
+      if (experiences.length > 0) {
+        experienceSection.classList.add('show');
+        experienceContent.innerHTML = '';
+
+        experiences.forEach(exp => {
+          const card = document.createElement('div');
+          card.className = 'experience-card';
+          card.innerHTML = `
+            <div class="experience-header">
+              <h3 class="experience-title">${exp.jobTitle || 'Position'}</h3>
+              <div class="experience-company">${exp.companyName || 'Company'}</div>
+              <div class="experience-duration">${formatExperienceDuration(exp.startDate, exp.endDate)}</div>
+            </div>
+            <p class="experience-description">${exp.description || 'No description provided.'}</p>
+          `;
+          experienceContent.appendChild(card);
+        });
+      } else {
+        experienceSection.classList.remove('show');
+      }
+
+      const servicesGrid = document.getElementById('servicesGrid');
+      servicesGrid.innerHTML = '';
+
+      selectedSkills.forEach(skill => {
+        const card = document.createElement('div');
+        card.className = 'service-card';
+        const categoryName = getCategoryName(skill.category);
+        const description = getSkillDescription(skill.name);
+
+        card.innerHTML = `
+          <span class="skill-category-badge">${categoryName}</span>
+          <h3>${skill.name}</h3>
+          <p>${description}</p>
+        `;
+        servicesGrid.appendChild(card);
+      });
+
+      document.getElementById('createView').classList.add('hidden');
+      document.getElementById('displayView').classList.add('show');
+      window.scrollTo(0, 0);
+    }
+
+    function editProfile() {
+      document.getElementById('displayView').classList.remove('show');
+      document.getElementById('createView').classList.remove('hidden');
+      currentStep = 1;
+      document.getElementById('step1').classList.add('active');
+      document.getElementById('step2').classList.remove('active');
+      document.getElementById('step3').classList.remove('active');
+      updateProgressIndicator(1);
+      window.scrollTo(0, 0);
+    }
+  </script>
+</body>
+</html>
